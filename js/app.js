@@ -412,6 +412,8 @@ function openJob(jobId){
 
 // =====================================
 // LOAD PROFILE
+// // =====================================
+// LOAD PROFILE REALTIME FINAL
 // =====================================
 
 function loadProfile(){
@@ -424,77 +426,140 @@ function loadProfile(){
   if(!profileContainer){
 
     return;
+
   }
 
-  const user =
-    auth.currentUser;
+  auth.onAuthStateChanged(
+    function(user){
 
-  if(!user){
+      if(!user){
 
-    return;
-  }
+        return;
 
-  db.collection("users")
+      }
 
-  .doc(user.uid)
+      db.collection("users")
 
-  .get()
+      .doc(user.uid)
 
-  .then(function(doc){
+      .onSnapshot(function(doc){
 
-    const data =
-      doc.data();
+        if(!doc.exists){
 
-    profileContainer.innerHTML = `
+          profileContainer.innerHTML =
+            "<p>Profile tidak ditemukan</p>";
 
-      <div class="card profile-box">
+          return;
 
-        <div class="avatar">
-          ${data.name.charAt(0)}
-        </div>
+        }
 
-        <h2>
-          ${data.name}
-        </h2>
+        const data = doc.data();
 
-        <br>
+        let avatarHTML = "";
 
-        <p>
-          📧 ${data.email}
-        </p>
+        // FOTO PROFILE
 
-        <br>
+        if(
+          data.photo &&
+          data.photo !== ""
+        ){
 
-        <p>
-          📱 ${data.phone}
-        </p>
+          avatarHTML = `
 
-        <br>
+            <img
+              src="${data.photo}"
+              class="avatar-image"
+            >
 
-        <p>
-          📍 ${data.location}
-        </p>
+          `;
 
-        <br>
+        }else{
 
-        <p>
-          💼 ${data.category}
-        </p>
+          // FALLBACK HURUF
 
-        <br>
+          avatarHTML = `
 
-        <p>
-          ⭐ ${data.rating}
-        </p>
+            <div class="avatar-letter">
 
-      </div>
+              ${data.name.charAt(0)}
 
-    `;
+            </div>
 
-  });
+          `;
+
+        }
+
+        profileContainer.innerHTML = `
+
+          <div class="card profile-card">
+
+            <div class="profile-top">
+
+              ${avatarHTML}
+
+            </div>
+
+            <h2>
+              ${data.name}
+            </h2>
+
+            <p>
+              📧 ${data.email}
+            </p>
+
+            <p>
+              📱 ${data.phone}
+            </p>
+
+            <p>
+              📍 ${data.location}
+            </p>
+
+            <p>
+              💼 ${data.category}
+            </p>
+
+            <p>
+              ⭐ ${data.rating}
+            </p>
+
+          </div>
+
+        `;
+
+        // AUTO FILL FORM
+
+        document.getElementById(
+          "editName"
+        ).value =
+          data.name || "";
+
+        document.getElementById(
+          "editPhone"
+        ).value =
+          data.phone || "";
+
+        document.getElementById(
+          "editLocation"
+        ).value =
+          data.location || "";
+
+        document.getElementById(
+          "editCategory"
+        ).value =
+          data.category || "";
+
+        document.getElementById(
+          "editPhoto"
+        ).value =
+          data.photo || "";
+
+      });
+
+    }
+  );
 
 }
-
 
 // =====================================
 // LOAD PROFILE REALTIME
