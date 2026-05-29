@@ -1,283 +1,275 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Home - KerjaDekat</title>
 
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: Arial, sans-serif;
-    }
+  <meta charset="UTF-8">
 
-    body {
-      background: #f5f7fa;
-      color: #222;
-      padding-bottom: 90px;
-    }
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    .header {
-      background: #16a34a;
-      padding: 20px;
-      color: white;
-      border-bottom-left-radius: 25px;
-      border-bottom-right-radius: 25px;
-    }
+  <title>KerjaDekat - Home</title>
 
-    .header h1 {
-      font-size: 28px;
-      margin-bottom: 5px;
-    }
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/style.css">
 
-    .header p {
-      opacity: 0.9;
-    }
-
-    .search-box {
-      margin-top: 20px;
-    }
-
-    .search-box input {
-      width: 100%;
-      padding: 14px;
-      border-radius: 14px;
-      border: none;
-      font-size: 16px;
-    }
-
-    .section {
-      padding: 20px;
-    }
-
-    .section-title {
-      font-size: 20px;
-      font-weight: bold;
-      margin-bottom: 15px;
-    }
-
-    .categories {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 15px;
-    }
-
-    .category-card {
-      background: white;
-      border-radius: 18px;
-      padding: 20px;
-      text-align: center;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-      cursor: pointer;
-      transition: 0.2s;
-    }
-
-    .category-card:hover {
-      transform: translateY(-3px);
-    }
-
-    .category-icon {
-      font-size: 32px;
-      margin-bottom: 10px;
-    }
-
-    .category-name {
-      font-size: 15px;
-      font-weight: bold;
-    }
-
-    .job-list {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-
-    .job-card {
-      background: white;
-      border-radius: 18px;
-      padding: 18px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-    }
-
-    .job-title {
-      font-size: 18px;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-
-    .job-price {
-      color: #16a34a;
-      font-weight: bold;
-      margin-bottom: 8px;
-    }
-
-    .job-location {
-      color: #666;
-      font-size: 14px;
-      margin-bottom: 12px;
-    }
-
-    .job-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .rating {
-      font-size: 14px;
-      color: #f59e0b;
-      font-weight: bold;
-    }
-
-    .detail-btn {
-      background: #16a34a;
-      color: white;
-      border: none;
-      padding: 10px 15px;
-      border-radius: 10px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      background: white;
-      display: flex;
-      justify-content: space-around;
-      padding: 12px 0;
-      box-shadow: 0 -3px 10px rgba(0,0,0,0.08);
-    }
-
-    .nav-item {
-      text-align: center;
-      font-size: 13px;
-      color: #666;
-      cursor: pointer;
-    }
-
-    .nav-item.active {
-      color: #16a34a;
-      font-weight: bold;
-    }
-
-    .nav-icon {
-      font-size: 22px;
-      margin-bottom: 5px;
-    }
-  </style>
 </head>
 <body>
 
+  <!-- HEADER -->
+
   <div class="header">
+
     <h1>KerjaDekat</h1>
-    <p>Cari kerja & bantuan sekitar</p>
 
-    <div class="search-box">
-      <input type="text" placeholder="Cari jasa atau pekerjaan..." />
-    </div>
+    <p>Cari penghasilan & bantuan sekitar</p>
+
   </div>
 
-  <div class="section">
-    <div class="section-title">Kategori Jasa</div>
+  <!-- CONTENT -->
 
-    <div class="categories">
+  <div class="container">
 
-      <div class="category-card">
-        <div class="category-icon">🧹</div>
-        <div class="category-name">Bersih Rumah</div>
+    <!-- SEARCH -->
+
+    <div class="card">
+
+      <input
+        type="text"
+        placeholder="Cari pekerjaan atau jasa..."
+      >
+
+      <button
+        class="btn"
+        onclick="goTo('search.html')"
+      >
+        Cari Sekarang
+      </button>
+
+    </div>
+
+    <!-- MENU -->
+
+    <div class="card">
+
+      <div class="section-title">
+        Kategori
       </div>
 
-      <div class="category-card">
-        <div class="category-icon">🚚</div>
-        <div class="category-name">Angkut Barang</div>
-      </div>
+      <div class="category-grid">
 
-      <div class="category-card">
-        <div class="category-icon">🔧</div>
-        <div class="category-name">Servis</div>
-      </div>
+        <div class="category-card">
 
-      <div class="category-card">
-        <div class="category-icon">🛵</div>
-        <div class="category-name">Kurir</div>
+          <div class="category-icon">
+            🚚
+          </div>
+
+          <div class="category-name">
+            Angkut Barang
+          </div>
+
+        </div>
+
+        <div class="category-card">
+
+          <div class="category-icon">
+            🧹
+          </div>
+
+          <div class="category-name">
+            Bersih Rumah
+          </div>
+
+        </div>
+
+        <div class="category-card">
+
+          <div class="category-icon">
+            🔧
+          </div>
+
+          <div class="category-name">
+            Servis
+          </div>
+
+        </div>
+
+        <div class="category-card">
+
+          <div class="category-icon">
+            🛵
+          </div>
+
+          <div class="category-name">
+            Kurir
+          </div>
+
+        </div>
+
       </div>
 
     </div>
-  </div>
 
-  <div class="section">
-    <div class="section-title">Job Terbaru</div>
+    <!-- JOB TERBARU -->
 
-    <div class="job-list">
+    <div class="section-title">
+      Job Terbaru
+    </div>
 
-      <div class="job-card">
-        <div class="job-title">Butuh bantu pindahan kos</div>
-        <div class="job-price">Rp100.000</div>
-        <div class="job-location">📍 Samarinda</div>
+    <!-- JOB 1 -->
 
-        <div class="job-footer">
-          <div class="rating">⭐ 4.9</div>
-          <button class="detail-btn">Lihat</button>
-        </div>
+    <div class="job-card">
+
+      <div class="job-title">
+        Butuh bantu pindahan kos
       </div>
 
-      <div class="job-card">
-        <div class="job-title">Cuci motor panggilan</div>
-        <div class="job-price">Rp50.000</div>
-        <div class="job-location">📍 Samarinda</div>
-
-        <div class="job-footer">
-          <div class="rating">⭐ 4.8</div>
-          <button class="detail-btn">Lihat</button>
-        </div>
+      <div class="job-price">
+        Rp100.000
       </div>
 
-      <div class="job-card">
-        <div class="job-title">Potong rumput halaman</div>
-        <div class="job-price">Rp75.000</div>
-        <div class="job-location">📍 Samarinda</div>
-
-        <div class="job-footer">
-          <div class="rating">⭐ 5.0</div>
-          <button class="detail-btn">Lihat</button>
-        </div>
+      <div class="job-location">
+        📍 Samarinda Kota
       </div>
+
+      <button
+        class="btn"
+        onclick="goTo('detail-job.html')"
+      >
+        Lihat Detail
+      </button>
 
     </div>
+
+    <!-- JOB 2 -->
+
+    <div class="job-card">
+
+      <div class="job-title">
+        Bersihkan halaman rumah
+      </div>
+
+      <div class="job-price">
+        Rp75.000
+      </div>
+
+      <div class="job-location">
+        📍 Sungai Kunjang
+      </div>
+
+      <button
+        class="btn"
+        onclick="goTo('detail-job.html')"
+      >
+        Lihat Detail
+      </button>
+
+    </div>
+
+    <!-- JOB 3 -->
+
+    <div class="job-card">
+
+      <div class="job-title">
+        Kurir antar dokumen
+      </div>
+
+      <div class="job-price">
+        Rp50.000
+      </div>
+
+      <div class="job-location">
+        📍 Samarinda Seberang
+      </div>
+
+      <button
+        class="btn"
+        onclick="goTo('detail-job.html')"
+      >
+        Lihat Detail
+      </button>
+
+    </div>
+
+    <!-- BUTTON CREATE JOB -->
+
+    <button
+      class="btn"
+      onclick="goTo('create-job.html')"
+    >
+      + Buat Job
+    </button>
+
   </div>
+
+  <!-- BOTTOM NAVIGATION -->
 
   <div class="bottom-nav">
 
     <div class="nav-item active">
-      <div class="nav-icon">🏠</div>
+
+      <div class="nav-icon">
+        🏠
+      </div>
+
       Home
+
     </div>
 
-    <div class="nav-item">
-      <div class="nav-icon">🔎</div>
+    <div
+      class="nav-item"
+      onclick="goTo('search.html')"
+    >
+
+      <div class="nav-icon">
+        🔎
+      </div>
+
       Cari
+
     </div>
 
-    <div class="nav-item">
-      <div class="nav-icon">➕</div>
-      Buat
-    </div>
+    <div
+      class="nav-item"
+      onclick="goTo('chat.html')"
+    >
 
-    <div class="nav-item">
-      <div class="nav-icon">💬</div>
+      <div class="nav-icon">
+        💬
+      </div>
+
       Chat
+
     </div>
 
-    <div class="nav-item">
-      <div class="nav-icon">👤</div>
+    <div
+      class="nav-item"
+      onclick="goTo('profile.html')"
+    >
+
+      <div class="nav-icon">
+        👤
+      </div>
+
       Profil
+
     </div>
 
   </div>
+
+  <!-- FIREBASE SDK -->
+
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
+  <!-- FIREBASE CONFIG -->
+
+  <script src="js/firebase.js"></script>
+
+  <!-- APP JS -->
+
+  <script src="js/app.js"></script>
 
 </body>
 </html>
