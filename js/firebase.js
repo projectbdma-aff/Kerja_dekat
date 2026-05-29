@@ -1,16 +1,16 @@
 const firebaseConfig = {
 
-  apiKey: "API_KEY_KAMU",
+  apiKey: "AIzaSyCxSbzpqLkjCF7LhxCsdg3xu530e0b_frs",
 
-  authDomain: "PROJECT.firebaseapp.com",
+  authDomain: "kerjadekat-web.firebaseapp.com",
 
-  projectId: "PROJECT_ID",
+  projectId: "kerjadekat-web",
 
-  storageBucket: "PROJECT.appspot.com",
+  storageBucket: "kerjadekat-web.firebasestorage.app",
 
-  messagingSenderId: "123456789",
+  messagingSenderId: "99396133528",
 
-  appId: "APP_ID"
+  appId: "1:99396133528:web:7a01b8d1ffa588c50da6ed"
 
 };
 
