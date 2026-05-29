@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Profile</title>
+
+  <link rel="stylesheet" href="css/style.css">
+
+</head>
+<body>
+
+  <div class="header">
+
+    <h1>Profil Saya</h1>
+
+    <p>Kelola akun & aktivitas</p>
+
+  </div>
+
+  <div class="container">
+
+    <div class="card profile-box">
+
+      <div class="avatar">
+        A
+      </div>
+
+      <h2>Andi Saputra</h2>
+
+      <p>⭐ 4.9 • ✅ Terverifikasi</p>
+
+    </div>
+
+    <div class="card">
+
+      <div class="section-title">
+        Statistik
+      </div>
+
+      <p>Total Job: 120</p>
+
+      <br>
+
+      <p>Job Selesai: 118</p>
+
+      <br>
+
+      <p>Rating: 4.9</p>
+
+    </div>
+
+    <div class="card">
+
+      <div class="section-title">
+        Menu
+      </div>
+
+      <button class="btn" onclick="goTo('my-jobs.html')">
+        Job Saya
+      </button>
+
+      <br><br>
+
+      <button class="btn" onclick="goTo('wallet.html')">
+        Wallet
+      </button>
+
+      <br><br>
+
+      <button class="btn" onclick="goTo('settings.html')">
+        Pengaturan
+      </button>
+
+    </div>
+
+    <button class="btn" onclick="logout()">
+      Logout
+    </button>
+
+  </div>
+
+  <div class="bottom-nav">
+
+    <div class="nav-item" onclick="goTo('home.html')">
+
+      <div class="nav-icon">🏠</div>
+
+      Home
+
+    </div>
+
+    <div class="nav-item" onclick="goTo('search.html')">
+
+      <div class="nav-icon">🔎</div>
+
+      Cari
+
+    </div>
+
+    <div class="nav-item active">
+
+      <div class="nav-icon">👤</div>
+
+      Profil
+
+    </div>
+
+  </div>
+
+  <script src="js/app.js"></script>
+
+</body>
+</html>
