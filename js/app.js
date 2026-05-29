@@ -3,82 +3,113 @@
 // =====================================
 
 function goTo(page){
+
   window.location.href = page;
+
 }
 
 // =====================================
-// FIREBASE RECAPTCHA
+// REGISTER
 // =====================================
 
-window.onload = function(){
+function registerUser(){
 
-  if(document.getElementById('recaptcha-container')){
+  const name =
+    document.getElementById(
+      "registerName"
+    ).value;
 
-    window.recaptchaVerifier =
-      new firebase.auth.RecaptchaVerifier(
-        'recaptcha-container',
-        {
-          size: 'normal',
+  const email =
+    document.getElementById(
+      "registerEmail"
+    ).value;
 
-          callback: function(response){
+  const password =
+    document.getElementById(
+      "registerPassword"
+    ).value;
 
-            console.log(
-              "Recaptcha verified"
-            );
+  const phone =
+    document.getElementById(
+      "registerPhone"
+    ).value;
 
-          }
-        }
-      );
+  const location =
+    document.getElementById(
+      "registerLocation"
+    ).value;
 
-    recaptchaVerifier.render();
-  }
+  const category =
+    document.getElementById(
+      "registerCategory"
+    ).value;
 
-};
+  if(
+    name === "" ||
+    email === "" ||
+    password === "" ||
+    phone === "" ||
+    location === "" ||
+    category === ""
+  ){
 
-// =====================================
-// SEND OTP
-// =====================================
-
-function sendOTP(){
-
-  const phoneNumber =
-    document.getElementById("phone").value;
-
-  if(phoneNumber === ""){
-
-    alert("Masukkan nomor HP");
+    alert(
+      "Semua data wajib diisi"
+    );
 
     return;
   }
 
-  const appVerifier =
-    window.recaptchaVerifier;
-
-  auth.signInWithPhoneNumber(
-    phoneNumber,
-    appVerifier
+  auth.createUserWithEmailAndPassword(
+    email,
+    password
   )
 
-  .then(function(confirmationResult){
+  .then(function(result){
 
-    window.confirmationResult =
-      confirmationResult;
+    const user =
+      result.user;
 
-    localStorage.setItem(
-      "phoneNumber",
-      phoneNumber
-    );
+    // SAVE USER DATA
 
-    // simpan verification id
+    db.collection("users")
 
-    localStorage.setItem(
-      "verificationId",
-      confirmationResult.verificationId
-    );
+    .doc(user.uid)
 
-    alert("OTP berhasil dikirim");
+    .set({
 
-    goTo("otp.html");
+      uid: user.uid,
+
+      name: name,
+
+      email: email,
+
+      phone: phone,
+
+      location: location,
+
+      category: category,
+
+      photo: "",
+
+      rating: 5,
+
+      createdAt:
+        firebase.firestore
+        .FieldValue
+        .serverTimestamp()
+
+    })
+
+    .then(function(){
+
+      alert(
+        "Pendaftaran berhasil"
+      );
+
+      goTo("home.html");
+
+    });
 
   })
 
@@ -86,51 +117,52 @@ function sendOTP(){
 
     console.log(error);
 
-    alert("Gagal mengirim OTP");
+    alert(
+      error.message
+    );
 
   });
 
 }
 
 // =====================================
-// VERIFY OTP
+// LOGIN
 // =====================================
 
-function verifyOTP(){
+function loginUser(){
 
-  const code =
-    document.getElementById("otpCode").value;
+  const email =
+    document.getElementById(
+      "loginEmail"
+    ).value;
 
-  if(code === ""){
+  const password =
+    document.getElementById(
+      "loginPassword"
+    ).value;
 
-    alert("Masukkan kode OTP");
+  if(
+    email === "" ||
+    password === ""
+  ){
+
+    alert(
+      "Lengkapi login"
+    );
 
     return;
   }
 
-  const verificationId =
-    localStorage.getItem(
-      "verificationId"
-    );
-
-  const credential =
-    firebase.auth.PhoneAuthProvider
-    .credential(
-      verificationId,
-      code
-    );
-
-  auth.signInWithCredential(
-    credential
+  auth.signInWithEmailAndPassword(
+    email,
+    password
   )
 
-  .then(function(result){
+  .then(function(){
 
-    const user = result.user;
-
-    console.log(user);
-
-    alert("Login berhasil");
+    alert(
+      "Login berhasil"
+    );
 
     goTo("home.html");
 
@@ -140,7 +172,9 @@ function verifyOTP(){
 
     console.log(error);
 
-    alert("OTP salah");
+    alert(
+      error.message
+    );
 
   });
 
@@ -155,8 +189,8 @@ auth.onAuthStateChanged(function(user){
   if(user){
 
     console.log(
-      "User login:",
-      user.phoneNumber
+      "Login:",
+      user.email
     );
 
   }else{
@@ -179,7 +213,9 @@ function logout(){
 
   .then(function(){
 
-    alert("Logout berhasil");
+    alert(
+      "Logout berhasil"
+    );
 
     goTo("index.html");
 
@@ -188,7 +224,7 @@ function logout(){
 }
 
 // =====================================
-// CREATE JOB REALTIME
+// CREATE JOB
 // =====================================
 
 function createJob(){
@@ -218,7 +254,9 @@ function createJob(){
 
   if(!user){
 
-    alert("Harus login");
+    alert(
+      "Harus login"
+    );
 
     return;
   }
@@ -230,7 +268,9 @@ function createJob(){
     location === ""
   ){
 
-    alert("Lengkapi semua data");
+    alert(
+      "Lengkapi data job"
+    );
 
     return;
   }
@@ -247,8 +287,9 @@ function createJob(){
 
     location: location,
 
-    userPhone:
-      user.phoneNumber,
+    userId: user.uid,
+
+    userEmail: user.email,
 
     status: "open",
 
@@ -282,7 +323,7 @@ function createJob(){
 }
 
 // =====================================
-// LOAD JOB REALTIME
+// LOAD JOBS REALTIME
 // =====================================
 
 function loadJobs(){
@@ -355,7 +396,7 @@ function loadJobs(){
 }
 
 // =====================================
-// OPEN DETAIL JOB
+// OPEN JOB DETAIL
 // =====================================
 
 function openJob(jobId){
@@ -370,216 +411,85 @@ function openJob(jobId){
 }
 
 // =====================================
-// LOAD DETAIL JOB
+// LOAD PROFILE
 // =====================================
 
-function loadJobDetail(){
+function loadProfile(){
 
-  const detailContainer =
+  const profileContainer =
     document.getElementById(
-      "jobDetail"
+      "profileData"
     );
 
-  if(!detailContainer){
+  if(!profileContainer){
 
     return;
   }
-
-  const jobId =
-    localStorage.getItem(
-      "selectedJob"
-    );
-
-  if(!jobId){
-
-    return;
-  }
-
-  db.collection("jobs")
-
-  .doc(jobId)
-
-  .get()
-
-  .then(function(doc){
-
-    if(doc.exists){
-
-      const job =
-        doc.data();
-
-      detailContainer.innerHTML = `
-
-        <div class="job-card">
-
-          <div class="job-title">
-            ${job.title}
-          </div>
-
-          <div class="job-price">
-            Rp${job.price}
-          </div>
-
-          <div class="job-location">
-            📍 ${job.location}
-          </div>
-
-          <br>
-
-          <p>
-            ${job.description}
-          </p>
-
-          <br>
-
-          <p>
-            Status:
-            ${job.status}
-          </p>
-
-          <br>
-
-          <button
-            class="btn"
-            onclick="acceptJob('${doc.id}')"
-          >
-            Ambil Job
-          </button>
-
-        </div>
-
-      `;
-
-    }
-
-  });
-
-}
-
-// =====================================
-// ACCEPT JOB
-// =====================================
-
-function acceptJob(jobId){
 
   const user =
     auth.currentUser;
 
   if(!user){
 
-    alert("Harus login");
-
     return;
   }
 
-  db.collection("jobs")
+  db.collection("users")
 
-  .doc(jobId)
+  .doc(user.uid)
 
-  .update({
+  .get()
 
-    status: "accepted",
+  .then(function(doc){
 
-    workerPhone:
-      user.phoneNumber
+    const data =
+      doc.data();
 
-  })
+    profileContainer.innerHTML = `
 
-  .then(function(){
+      <div class="card profile-box">
 
-    alert(
-      "Job berhasil diambil"
-    );
+        <div class="avatar">
+          ${data.name.charAt(0)}
+        </div>
 
-  })
+        <h2>
+          ${data.name}
+        </h2>
 
-  .catch(function(error){
+        <br>
 
-    console.log(error);
+        <p>
+          📧 ${data.email}
+        </p>
 
-    alert(
-      "Gagal mengambil job"
-    );
+        <br>
 
-  });
+        <p>
+          📱 ${data.phone}
+        </p>
 
-}
+        <br>
 
-// =====================================
-// SEARCH JOB
-// =====================================
+        <p>
+          📍 ${data.location}
+        </p>
 
-function searchJobs(){
+        <br>
 
-  const keyword =
-    document.getElementById(
-      "searchInput"
-    ).value
-    .toLowerCase();
+        <p>
+          💼 ${data.category}
+        </p>
 
-  const jobList =
-    document.getElementById(
-      "jobList"
-    );
+        <br>
 
-  if(!jobList){
+        <p>
+          ⭐ ${data.rating}
+        </p>
 
-    return;
-  }
+      </div>
 
-  db.collection("jobs")
-
-  .orderBy(
-    "createdAt",
-    "desc"
-  )
-
-  .onSnapshot(function(snapshot){
-
-    jobList.innerHTML = "";
-
-    snapshot.forEach(function(doc){
-
-      const job =
-        doc.data();
-
-      const title =
-        job.title.toLowerCase();
-
-      if(title.includes(keyword)){
-
-        jobList.innerHTML += `
-
-          <div class="job-card">
-
-            <div class="job-title">
-              ${job.title}
-            </div>
-
-            <div class="job-price">
-              Rp${job.price}
-            </div>
-
-            <div class="job-location">
-              📍 ${job.location}
-            </div>
-
-            <br>
-
-            <button
-              class="btn"
-              onclick="openJob('${doc.id}')"
-            >
-              Detail
-            </button>
-
-          </div>
-
-        `;
-
-      }
-
-    });
+    `;
 
   });
 
@@ -595,7 +505,7 @@ window.addEventListener(
 
     loadJobs();
 
-    loadJobDetail();
+    loadProfile();
 
   }
 );
