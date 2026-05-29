@@ -1,10 +1,14 @@
+// =====================================
 // NAVIGATION
+// =====================================
 
 function goTo(page){
   window.location.href = page;
 }
 
+// =====================================
 // FIREBASE RECAPTCHA
+// =====================================
 
 window.onload = function(){
 
@@ -15,8 +19,13 @@ window.onload = function(){
         'recaptcha-container',
         {
           size: 'normal',
+
           callback: function(response){
-            console.log("Recaptcha verified");
+
+            console.log(
+              "Recaptcha verified"
+            );
+
           }
         }
       );
@@ -26,7 +35,9 @@ window.onload = function(){
 
 };
 
+// =====================================
 // SEND OTP
+// =====================================
 
 function sendOTP(){
 
@@ -58,6 +69,13 @@ function sendOTP(){
       phoneNumber
     );
 
+    // simpan verification id
+
+    localStorage.setItem(
+      "verificationId",
+      confirmationResult.verificationId
+    );
+
     alert("OTP berhasil dikirim");
 
     goTo("otp.html");
@@ -68,15 +86,15 @@ function sendOTP(){
 
     console.log(error);
 
-    alert(
-      "Gagal mengirim OTP"
-    );
+    alert("Gagal mengirim OTP");
 
   });
 
 }
 
+// =====================================
 // VERIFY OTP
+// =====================================
 
 function verifyOTP(){
 
@@ -90,32 +108,47 @@ function verifyOTP(){
     return;
   }
 
-  window.confirmationResult
-    .confirm(code)
+  const verificationId =
+    localStorage.getItem(
+      "verificationId"
+    );
 
-    .then(function(result){
+  const credential =
+    firebase.auth.PhoneAuthProvider
+    .credential(
+      verificationId,
+      code
+    );
 
-      const user = result.user;
+  auth.signInWithCredential(
+    credential
+  )
 
-      console.log(user);
+  .then(function(result){
 
-      alert("Login berhasil");
+    const user = result.user;
 
-      goTo("home.html");
+    console.log(user);
 
-    })
+    alert("Login berhasil");
 
-    .catch(function(error){
+    goTo("home.html");
 
-      console.log(error);
+  })
 
-      alert("OTP salah");
+  .catch(function(error){
 
-    });
+    console.log(error);
+
+    alert("OTP salah");
+
+  });
 
 }
 
+// =====================================
 // CHECK LOGIN
+// =====================================
 
 auth.onAuthStateChanged(function(user){
 
@@ -136,7 +169,9 @@ auth.onAuthStateChanged(function(user){
 
 });
 
+// =====================================
 // LOGOUT
+// =====================================
 
 function logout(){
 
@@ -151,3 +186,416 @@ function logout(){
   });
 
 }
+
+// =====================================
+// CREATE JOB REALTIME
+// =====================================
+
+function createJob(){
+
+  const title =
+    document.getElementById(
+      "jobTitle"
+    ).value;
+
+  const description =
+    document.getElementById(
+      "jobDescription"
+    ).value;
+
+  const price =
+    document.getElementById(
+      "jobPrice"
+    ).value;
+
+  const location =
+    document.getElementById(
+      "jobLocation"
+    ).value;
+
+  const user =
+    auth.currentUser;
+
+  if(!user){
+
+    alert("Harus login");
+
+    return;
+  }
+
+  if(
+    title === "" ||
+    description === "" ||
+    price === "" ||
+    location === ""
+  ){
+
+    alert("Lengkapi semua data");
+
+    return;
+  }
+
+  db.collection("jobs")
+
+  .add({
+
+    title: title,
+
+    description: description,
+
+    price: price,
+
+    location: location,
+
+    userPhone:
+      user.phoneNumber,
+
+    status: "open",
+
+    createdAt:
+      firebase.firestore
+      .FieldValue
+      .serverTimestamp()
+
+  })
+
+  .then(function(){
+
+    alert(
+      "Job berhasil dibuat"
+    );
+
+    goTo("home.html");
+
+  })
+
+  .catch(function(error){
+
+    console.log(error);
+
+    alert(
+      "Gagal membuat job"
+    );
+
+  });
+
+}
+
+// =====================================
+// LOAD JOB REALTIME
+// =====================================
+
+function loadJobs(){
+
+  const jobList =
+    document.getElementById(
+      "jobList"
+    );
+
+  if(!jobList){
+
+    return;
+  }
+
+  db.collection("jobs")
+
+  .orderBy(
+    "createdAt",
+    "desc"
+  )
+
+  .onSnapshot(function(snapshot){
+
+    jobList.innerHTML = "";
+
+    snapshot.forEach(function(doc){
+
+      const job =
+        doc.data();
+
+      jobList.innerHTML += `
+
+        <div class="job-card">
+
+          <div class="job-title">
+            ${job.title}
+          </div>
+
+          <div class="job-price">
+            Rp${job.price}
+          </div>
+
+          <div class="job-location">
+            📍 ${job.location}
+          </div>
+
+          <br>
+
+          <p>
+            ${job.description}
+          </p>
+
+          <br>
+
+          <button
+            class="btn"
+            onclick="openJob('${doc.id}')"
+          >
+            Detail Job
+          </button>
+
+        </div>
+
+      `;
+
+    });
+
+  });
+
+}
+
+// =====================================
+// OPEN DETAIL JOB
+// =====================================
+
+function openJob(jobId){
+
+  localStorage.setItem(
+    "selectedJob",
+    jobId
+  );
+
+  goTo("detail-job.html");
+
+}
+
+// =====================================
+// LOAD DETAIL JOB
+// =====================================
+
+function loadJobDetail(){
+
+  const detailContainer =
+    document.getElementById(
+      "jobDetail"
+    );
+
+  if(!detailContainer){
+
+    return;
+  }
+
+  const jobId =
+    localStorage.getItem(
+      "selectedJob"
+    );
+
+  if(!jobId){
+
+    return;
+  }
+
+  db.collection("jobs")
+
+  .doc(jobId)
+
+  .get()
+
+  .then(function(doc){
+
+    if(doc.exists){
+
+      const job =
+        doc.data();
+
+      detailContainer.innerHTML = `
+
+        <div class="job-card">
+
+          <div class="job-title">
+            ${job.title}
+          </div>
+
+          <div class="job-price">
+            Rp${job.price}
+          </div>
+
+          <div class="job-location">
+            📍 ${job.location}
+          </div>
+
+          <br>
+
+          <p>
+            ${job.description}
+          </p>
+
+          <br>
+
+          <p>
+            Status:
+            ${job.status}
+          </p>
+
+          <br>
+
+          <button
+            class="btn"
+            onclick="acceptJob('${doc.id}')"
+          >
+            Ambil Job
+          </button>
+
+        </div>
+
+      `;
+
+    }
+
+  });
+
+}
+
+// =====================================
+// ACCEPT JOB
+// =====================================
+
+function acceptJob(jobId){
+
+  const user =
+    auth.currentUser;
+
+  if(!user){
+
+    alert("Harus login");
+
+    return;
+  }
+
+  db.collection("jobs")
+
+  .doc(jobId)
+
+  .update({
+
+    status: "accepted",
+
+    workerPhone:
+      user.phoneNumber
+
+  })
+
+  .then(function(){
+
+    alert(
+      "Job berhasil diambil"
+    );
+
+  })
+
+  .catch(function(error){
+
+    console.log(error);
+
+    alert(
+      "Gagal mengambil job"
+    );
+
+  });
+
+}
+
+// =====================================
+// SEARCH JOB
+// =====================================
+
+function searchJobs(){
+
+  const keyword =
+    document.getElementById(
+      "searchInput"
+    ).value
+    .toLowerCase();
+
+  const jobList =
+    document.getElementById(
+      "jobList"
+    );
+
+  if(!jobList){
+
+    return;
+  }
+
+  db.collection("jobs")
+
+  .orderBy(
+    "createdAt",
+    "desc"
+  )
+
+  .onSnapshot(function(snapshot){
+
+    jobList.innerHTML = "";
+
+    snapshot.forEach(function(doc){
+
+      const job =
+        doc.data();
+
+      const title =
+        job.title.toLowerCase();
+
+      if(title.includes(keyword)){
+
+        jobList.innerHTML += `
+
+          <div class="job-card">
+
+            <div class="job-title">
+              ${job.title}
+            </div>
+
+            <div class="job-price">
+              Rp${job.price}
+            </div>
+
+            <div class="job-location">
+              📍 ${job.location}
+            </div>
+
+            <br>
+
+            <button
+              class="btn"
+              onclick="openJob('${doc.id}')"
+            >
+              Detail
+            </button>
+
+          </div>
+
+        `;
+
+      }
+
+    });
+
+  });
+
+}
+
+// =====================================
+// AUTO LOAD
+// =====================================
+
+window.addEventListener(
+  "load",
+  function(){
+
+    loadJobs();
+
+    loadJobDetail();
+
+  }
+);
