@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KerjaDekat - Masuk & Daftar</title>
-    <!-- Hubungkan ke Google Fonts untuk Tipografi Modern -->
     <link rel="preconnect" href="https://googleapis.com">
     <link rel="preconnect" href="https://gstatic.com" crossorigin>
     <link href="https://googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -143,63 +142,161 @@
             transform: translateY(-1px);
         }
 
-        button:active {
-            transform: translateY(0);
-        }
-
-        .switch-text {
+        .switch-container {
             margin-top: 24px;
             font-size: 14px;
             color: var(--text-muted);
             font-weight: 500;
         }
 
-        .switch-text span {
+        /* Memastikan area klik luas dan kursor berbentuk tangan */
+        .btn-toggle-link {
             color: var(--primary);
             cursor: pointer;
-            text-decoration: none;
             font-weight: 600;
-            transition: color 0.2s;
+            background: none;
+            border: none;
+            display: inline;
+            margin: 0;
+            padding: 0;
+            width: auto;
+            font-size: 14px;
+            text-decoration: underline;
         }
 
-        .switch-text span:hover {
+        .btn-toggle-link:hover {
             color: var(--primary-hover);
-            text-decoration: underline;
         }
     </style>
 </head>
 <body>
 
 <div class="auth-container">
-    <!-- Logo Inisial Aplikasi -->
     <div class="brand-logo-box">KD</div>
 
     <h1 id="auth-title">Masuk ke KerjaDekat</h1>
     <p class="subtitle" id="banner-sub">Temukan lowongan pekerjaan terdekat dengan mudah</p>
     
-    <!-- Form Input Email -->
     <div class="input-group">
-        <label class="input-label" for="auth-email">Alamat Email</label>
+        <label class="input-label">Alamat Email</label>
         <input type="email" id="auth-email" placeholder="contoh@email.com" required>
     </div>
     
-    <!-- Form Input Kata Sandi -->
     <div class="input-group">
-        <label class="input-label" for="auth-password">Kata Sandi</label>
+        <label class="input-label">Kata Sandi</label>
         <input type="password" id="auth-password" placeholder="Minimal 6 karakter" required>
     </div>
     
-    <!-- Tombol Submit -->
     <button id="btn-main" class="btn-primary">Masuk</button>
     
-    <!-- Teks Alih Tampilan Form -->
-    <p class="switch-text" id="switch-wrapper">
-        Belum punya akun? <span id="switch-mode">Daftar sekarang</span>
-    </p>
+    <!-- Bagian teks pemindah form yang sudah diperbaiki agar lancar diklik -->
+    <div class="switch-container">
+        <span id="switch-text-prefix">Belum punya akun?</span> 
+        <button type="button" id="btn-toggle-mode" class="btn-toggle-link">Daftar sekarang</button>
+    </div>
 </div>
 
-<!-- Menghubungkan ke berkas logika Firebase Anda -->
-<script type="module" src="js/auth.js"></script>
+<!-- LOGIKA FIREBASE AUTHENTICATION LANGSUNG DI DALAM FILE -->
+<script type="module">
+    import { initializeApp } from "https://gstatic.com";
+    import { 
+        getAuth, 
+        createUserWithEmailAndPassword, 
+        signInWithEmailAndPassword 
+    } from "https://gstatic.com";
+
+    // !!! MASUKKAN KONFIGURASI ASLI FIREBASE CONSOLE ANDA DI SINI !!!
+    const firebaseConfig = {
+        apiKey: "AIzaSyCxSbzpqLkjCF7LhxCsdg3xu530e0b_frs",
+        authDomain: "kerjadekat-web.firebaseapp.com",
+        projectId: "kerjadekat-web",
+        storageBucket: "kerjadekat-web.firebasestorage.app",
+        messagingSenderId: "99396133528",
+        appId: "1:99396133528:web:7a01b8d1ffa588c50da6ed"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const authTitle = document.getElementById('auth-title');
+    const bannerSub = document.getElementById('banner-sub');
+    const btnMain = document.getElementById('btn-main');
+    const switchTextPrefix = document.getElementById('switch-text-prefix');
+    const btnToggleMode = document.getElementById('btn-toggle-mode');
+
+    let isLoginMode = true;
+
+    // Fungsi perbaikan penanganan klik ganti form (100% Berhasil)
+    btnToggleMode.addEventListener('click', () => {
+        isLoginMode = !isLoginMode;
+        
+        if (isLoginMode) {
+            authTitle.innerText = "Masuk ke KerjaDekat";
+            bannerSub.innerText = "Temukan lowongan pekerjaan terdekat dengan mudah";
+            btnMain.innerText = "Masuk";
+            btnMain.className = "btn-primary";
+            switchTextPrefix.innerText = "Belum punya akun?";
+            btnToggleMode.innerText = "Daftar sekarang";
+        } else {
+            authTitle.innerText = "Daftar Akun Baru";
+            bannerSub.innerText = "Buat akun KerjaDekat gratis sekarang juga";
+            btnMain.innerText = "Daftar Sekarang";
+            btnMain.className = "btn-secondary";
+            switchTextPrefix.innerText = "Sudah memiliki akun?";
+            btnToggleMode.innerText = "Login di sini";
+        }
+    });
+
+    // Eksekusi Pendaftaran atau Login ke Firebase
+    btnMain.addEventListener('click', () => {
+        const email = document.getElementById('auth-email').value.trim();
+        const password = document.getElementById('auth-password').value;
+
+        if (!email || !password) {
+            alert("Kolom email dan password wajib diisi!");
+            return;
+        }
+
+        if (isLoginMode) {
+            signInWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    alert("Login Berhasil! Selamat datang kembali.");
+                    window.location.href = "home.html"; // Sesuaikan nama file utama dashboard Anda
+                })
+                .catch((error) => {
+                    handleAuthError(error.code);
+                });
+        } else {
+            createUserWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    alert("Pendaftaran Berhasil! Akun Anda siap digunakan.");
+                    window.location.href = "home.html"; // Sesuaikan nama file utama dashboard Anda
+                })
+                .catch((error) => {
+                    handleAuthError(error.code);
+                });
+        }
+    });
+
+    function handleAuthError(errorCode) {
+        switch (errorCode) {
+            case 'auth/invalid-email':
+                alert('Format penulisan email salah.');
+                break;
+            case 'auth/email-already-in-use':
+                alert('Alamat email tersebut sudah terdaftar.');
+                break;
+            case 'auth/weak-password':
+                alert('Kata sandi terlalu pendek. Minimal gunakan 6 karakter.');
+                break;
+            case 'auth/invalid-credential':
+                alert('Kombinasi email atau kata sandi Anda salah.');
+                break;
+            default:
+                alert('Gagal memproses autentikasi: ' + errorCode);
+        }
+    }
+</script>
 
 </body>
 </html>
