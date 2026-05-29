@@ -1,250 +1,27 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Buat Job - KerjaDekat</title>
 
-  <style>
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-      font-family:Arial,sans-serif;
-    }
+  <meta charset="UTF-8">
 
-    body{
-      background:#f5f7fa;
-      color:#222;
-      padding-bottom:120px;
-    }
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    .header{
-      background:#16a34a;
-      color:white;
-      padding:25px 20px;
-      border-bottom-left-radius:25px;
-      border-bottom-right-radius:25px;
-    }
+  <title>Buat Job</title>
 
-    .header h1{
-      font-size:28px;
-      margin-bottom:8px;
-    }
+  <link rel="stylesheet" href="css/style.css">
 
-    .header p{
-      opacity:0.9;
-      font-size:15px;
-    }
-
-    .container{
-      padding:20px;
-    }
-
-    .card{
-      background:white;
-      border-radius:20px;
-      padding:20px;
-      margin-bottom:20px;
-      box-shadow:0 4px 12px rgba(0,0,0,0.05);
-    }
-
-    .section-title{
-      font-size:18px;
-      font-weight:bold;
-      margin-bottom:18px;
-    }
-
-    .input-group{
-      margin-bottom:18px;
-    }
-
-    label{
-      display:block;
-      margin-bottom:8px;
-      font-weight:bold;
-      font-size:15px;
-    }
-
-    input,
-    textarea,
-    select{
-      width:100%;
-      padding:14px;
-      border-radius:14px;
-      border:1px solid #d1d5db;
-      font-size:15px;
-      background:white;
-    }
-
-    textarea{
-      resize:none;
-      min-height:120px;
-    }
-
-    input:focus,
-    textarea:focus,
-    select:focus{
-      outline:none;
-      border-color:#16a34a;
-    }
-
-    .upload-box{
-      border:2px dashed #cbd5e1;
-      border-radius:18px;
-      padding:30px 20px;
-      text-align:center;
-      cursor:pointer;
-      transition:0.2s;
-    }
-
-    .upload-box:hover{
-      border-color:#16a34a;
-      background:#f0fdf4;
-    }
-
-    .upload-icon{
-      font-size:40px;
-      margin-bottom:10px;
-    }
-
-    .upload-text{
-      font-size:15px;
-      color:#666;
-      line-height:1.5;
-    }
-
-    .category-grid{
-      display:grid;
-      grid-template-columns:repeat(2,1fr);
-      gap:12px;
-    }
-
-    .category-card{
-      border:1px solid #ddd;
-      border-radius:16px;
-      padding:18px;
-      text-align:center;
-      cursor:pointer;
-      transition:0.2s;
-      background:white;
-    }
-
-    .category-card.active{
-      border-color:#16a34a;
-      background:#f0fdf4;
-    }
-
-    .category-icon{
-      font-size:30px;
-      margin-bottom:10px;
-    }
-
-    .category-name{
-      font-size:14px;
-      font-weight:bold;
-    }
-
-    .tips-box{
-      background:#f0fdf4;
-      border-radius:16px;
-      padding:16px;
-      margin-top:10px;
-    }
-
-    .tips-title{
-      font-weight:bold;
-      color:#166534;
-      margin-bottom:10px;
-    }
-
-    .tips-box ul{
-      padding-left:18px;
-      color:#166534;
-      line-height:1.8;
-      font-size:14px;
-    }
-
-    .bottom-bar{
-      position:fixed;
-      bottom:0;
-      width:100%;
-      background:white;
-      padding:18px 20px;
-      box-shadow:0 -4px 10px rgba(0,0,0,0.08);
-    }
-
-    .submit-btn{
-      width:100%;
-      padding:16px;
-      border:none;
-      border-radius:16px;
-      background:#16a34a;
-      color:white;
-      font-size:17px;
-      font-weight:bold;
-      cursor:pointer;
-    }
-
-    .submit-btn:hover{
-      opacity:0.95;
-    }
-
-    .safe-note{
-      text-align:center;
-      margin-top:12px;
-      font-size:13px;
-      color:#666;
-    }
-
-  </style>
 </head>
 <body>
 
-  <!-- HEADER -->
-
   <div class="header">
+
     <h1>Buat Job</h1>
-    <p>Temukan bantuan sekitar dengan cepat & aman</p>
+
+    <p>Posting pekerjaan baru</p>
+
   </div>
 
   <div class="container">
-
-    <!-- KATEGORI -->
-
-    <div class="card">
-
-      <div class="section-title">
-        Pilih Kategori
-      </div>
-
-      <div class="category-grid">
-
-        <div class="category-card active">
-          <div class="category-icon">🚚</div>
-          <div class="category-name">Angkut Barang</div>
-        </div>
-
-        <div class="category-card">
-          <div class="category-icon">🧹</div>
-          <div class="category-name">Bersih Rumah</div>
-        </div>
-
-        <div class="category-card">
-          <div class="category-icon">🔧</div>
-          <div class="category-name">Servis</div>
-        </div>
-
-        <div class="category-card">
-          <div class="category-icon">🛵</div>
-          <div class="category-name">Kurir</div>
-        </div>
-
-      </div>
-
-    </div>
-
-    <!-- FORM -->
 
     <div class="card">
 
@@ -252,142 +29,56 @@
         Detail Pekerjaan
       </div>
 
-      <div class="input-group">
-        <label>Judul Job</label>
+      <input
+        type="text"
+        id="jobTitle"
+        placeholder="Judul pekerjaan"
+      >
 
-        <input
-          type="text"
-          placeholder="Contoh: Butuh bantu pindahan kos"
-        />
-      </div>
+      <textarea
+        id="jobDescription"
+        rows="5"
+        placeholder="Deskripsi pekerjaan"
+      ></textarea>
 
-      <div class="input-group">
-        <label>Deskripsi</label>
+      <input
+        type="number"
+        id="jobPrice"
+        placeholder="Upah"
+      >
 
-        <textarea placeholder="Jelaskan pekerjaan secara detail..."></textarea>
-      </div>
+      <input
+        type="text"
+        id="jobLocation"
+        placeholder="Lokasi"
+      >
 
-      <div class="input-group">
-        <label>Harga Jasa</label>
-
-        <input
-          type="number"
-          placeholder="Contoh: 100000"
-        />
-      </div>
-
-      <div class="input-group">
-        <label>Lokasi</label>
-
-        <input
-          type="text"
-          placeholder="Masukkan lokasi pekerjaan"
-        />
-      </div>
-
-      <div class="input-group">
-        <label>Waktu Pekerjaan</label>
-
-        <input
-          type="datetime-local"
-        />
-      </div>
-
-    </div>
-
-    <!-- FOTO -->
-
-    <div class="card">
-
-      <div class="section-title">
-        Upload Foto
-      </div>
-
-      <div class="upload-box" onclick="uploadPhoto()">
-
-        <div class="upload-icon">
-          📷
-        </div>
-
-        <div class="upload-text">
-          Klik untuk upload foto pekerjaan
-        </div>
-
-      </div>
-
-    </div>
-
-    <!-- ESCROW -->
-
-    <div class="card">
-
-      <div class="section-title">
-        Pembayaran Aman
-      </div>
-
-      <div class="tips-box">
-
-        <div class="tips-title">
-          🔒 Sistem Escrow Aman
-        </div>
-
-        <ul>
-          <li>Uang ditahan sementara oleh sistem</li>
-          <li>Dana cair setelah pekerjaan selesai</li>
-          <li>Mengurangi risiko penipuan</li>
-          <li>Kedua pihak saling memberi rating</li>
-        </ul>
-
-      </div>
-
-    </div>
-
-    <!-- TIPS -->
-
-    <div class="card">
-
-      <div class="section-title">
-        Tips Membuat Job
-      </div>
-
-      <div class="tips-box">
-
-        <ul>
-          <li>Gunakan judul yang jelas</li>
-          <li>Berikan lokasi yang akurat</li>
-          <li>Tentukan harga sesuai pekerjaan</li>
-          <li>Upload foto agar lebih dipercaya</li>
-        </ul>
-
-      </div>
+      <button
+        class="btn"
+        onclick="createJob()"
+      >
+        Posting Job
+      </button>
 
     </div>
 
   </div>
 
-  <!-- BOTTOM -->
+  <!-- FIREBASE SDK -->
 
-  <div class="bottom-bar">
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 
-    <button class="submit-btn" onclick="submitJob()">
-      Posting Job
-    </button>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
 
-    <div class="safe-note">
-      ✅ Semua transaksi dilindungi escrow
-    </div>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 
-  </div>
+  <!-- FIREBASE -->
 
-  <script>
-    function uploadPhoto(){
-      alert("Membuka upload foto...");
-    }
+  <script src="js/firebase.js"></script>
 
-    function submitJob(){
-      alert("Job berhasil diposting");
-    }
-  </script>
+  <!-- APP -->
+
+  <script src="js/app.js"></script>
 
 </body>
 </html>
