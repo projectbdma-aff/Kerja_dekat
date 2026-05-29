@@ -495,6 +495,225 @@ function loadProfile(){
 
 }
 
+
+// =====================================
+// LOAD PROFILE REALTIME
+// =====================================
+
+function loadProfile(){
+
+  const profileContainer =
+    document.getElementById(
+      "profileData"
+    );
+
+  if(!profileContainer){
+
+    return;
+  }
+
+  const user =
+    auth.currentUser;
+
+  if(!user){
+
+    return;
+  }
+
+  db.collection("users")
+
+  .doc(user.uid)
+
+  .onSnapshot(function(doc){
+
+    const data =
+      doc.data();
+
+    // PROFILE VIEW
+
+    profileContainer.innerHTML = `
+
+      <div class="card profile-box">
+
+        <div class="profile-avatar">
+
+          ${
+            data.photo
+            ?
+            `<img
+              src="${data.photo}"
+              class="avatar-img"
+            >`
+            :
+            data.name.charAt(0)
+          }
+
+        </div>
+
+        <h2>
+          ${data.name}
+        </h2>
+
+        <br>
+
+        <p>
+          📧 ${data.email}
+        </p>
+
+        <br>
+
+        <p>
+          📱 ${data.phone}
+        </p>
+
+        <br>
+
+        <p>
+          📍 ${data.location}
+        </p>
+
+        <br>
+
+        <p>
+          💼 ${data.category}
+        </p>
+
+        <br>
+
+        <p>
+          ⭐ ${data.rating}
+        </p>
+
+      </div>
+
+    `;
+
+    // AUTO FILL EDIT FORM
+
+    document.getElementById(
+      "editName"
+    ).value = data.name;
+
+    document.getElementById(
+      "editPhone"
+    ).value = data.phone;
+
+    document.getElementById(
+      "editLocation"
+    ).value = data.location;
+
+    document.getElementById(
+      "editCategory"
+    ).value = data.category;
+
+    document.getElementById(
+      "editPhoto"
+    ).value = data.photo;
+
+  });
+
+}
+
+// =====================================
+// UPDATE PROFILE
+// =====================================
+
+function updateProfile(){
+
+  const user =
+    auth.currentUser;
+
+  if(!user){
+
+    alert(
+      "Harus login"
+    );
+
+    return;
+  }
+
+  const name =
+    document.getElementById(
+      "editName"
+    ).value;
+
+  const phone =
+    document.getElementById(
+      "editPhone"
+    ).value;
+
+  const location =
+    document.getElementById(
+      "editLocation"
+    ).value;
+
+  const category =
+    document.getElementById(
+      "editCategory"
+    ).value;
+
+  const photo =
+    document.getElementById(
+      "editPhoto"
+    ).value;
+
+  if(
+    name === "" ||
+    phone === "" ||
+    location === "" ||
+    category === ""
+  ){
+
+    alert(
+      "Lengkapi data profile"
+    );
+
+    return;
+  }
+
+  db.collection("users")
+
+  .doc(user.uid)
+
+  .update({
+
+    name: name,
+
+    phone: phone,
+
+    location: location,
+
+    category: category,
+
+    photo: photo
+
+  })
+
+  .then(function(){
+
+    alert(
+      "Profil berhasil diperbarui"
+    );
+
+  })
+
+  .catch(function(error){
+
+    console.log(error);
+
+    alert(
+      "Gagal update profile"
+    );
+
+  });
+
+}
+
+
+
+
+
+
 // =====================================
 // AUTO LOAD
 // =====================================
