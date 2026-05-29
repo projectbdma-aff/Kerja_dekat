@@ -6,190 +6,22 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>KerjaDekat - Home</title>
+  <title>KerjaDekat Home</title>
 
-  <!-- CSS -->
   <link rel="stylesheet" href="css/style.css">
 
 </head>
 <body>
 
-  <!-- HEADER -->
-
   <div class="header">
 
     <h1>KerjaDekat</h1>
 
-    <p>Cari penghasilan & bantuan sekitar</p>
+    <p>Cari penghasilan sekitar</p>
 
   </div>
 
-  <!-- CONTENT -->
-
   <div class="container">
-
-    <!-- SEARCH -->
-
-    <div class="card">
-
-      <input
-        type="text"
-        placeholder="Cari pekerjaan atau jasa..."
-      >
-
-      <button
-        class="btn"
-        onclick="goTo('search.html')"
-      >
-        Cari Sekarang
-      </button>
-
-    </div>
-
-    <!-- MENU -->
-
-    <div class="card">
-
-      <div class="section-title">
-        Kategori
-      </div>
-
-      <div class="category-grid">
-
-        <div class="category-card">
-
-          <div class="category-icon">
-            🚚
-          </div>
-
-          <div class="category-name">
-            Angkut Barang
-          </div>
-
-        </div>
-
-        <div class="category-card">
-
-          <div class="category-icon">
-            🧹
-          </div>
-
-          <div class="category-name">
-            Bersih Rumah
-          </div>
-
-        </div>
-
-        <div class="category-card">
-
-          <div class="category-icon">
-            🔧
-          </div>
-
-          <div class="category-name">
-            Servis
-          </div>
-
-        </div>
-
-        <div class="category-card">
-
-          <div class="category-icon">
-            🛵
-          </div>
-
-          <div class="category-name">
-            Kurir
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-
-    <!-- JOB TERBARU -->
-
-    <div class="section-title">
-      Job Terbaru
-    </div>
-
-    <!-- JOB 1 -->
-
-    <div class="job-card">
-
-      <div class="job-title">
-        Butuh bantu pindahan kos
-      </div>
-
-      <div class="job-price">
-        Rp100.000
-      </div>
-
-      <div class="job-location">
-        📍 Samarinda Kota
-      </div>
-
-      <button
-        class="btn"
-        onclick="goTo('detail-job.html')"
-      >
-        Lihat Detail
-      </button>
-
-    </div>
-
-    <!-- JOB 2 -->
-
-    <div class="job-card">
-
-      <div class="job-title">
-        Bersihkan halaman rumah
-      </div>
-
-      <div class="job-price">
-        Rp75.000
-      </div>
-
-      <div class="job-location">
-        📍 Sungai Kunjang
-      </div>
-
-      <button
-        class="btn"
-        onclick="goTo('detail-job.html')"
-      >
-        Lihat Detail
-      </button>
-
-    </div>
-
-    <!-- JOB 3 -->
-
-    <div class="job-card">
-
-      <div class="job-title">
-        Kurir antar dokumen
-      </div>
-
-      <div class="job-price">
-        Rp50.000
-      </div>
-
-      <div class="job-location">
-        📍 Samarinda Seberang
-      </div>
-
-      <button
-        class="btn"
-        onclick="goTo('detail-job.html')"
-      >
-        Lihat Detail
-      </button>
-
-    </div>
-
-    <!-- BUTTON CREATE JOB -->
 
     <button
       class="btn"
@@ -198,9 +30,19 @@
       + Buat Job
     </button>
 
+    <br><br>
+
+    <div class="section-title">
+      Job Terbaru
+    </div>
+
+    <!-- JOB LIST -->
+
+    <div id="jobList"></div>
+
   </div>
 
-  <!-- BOTTOM NAVIGATION -->
+  <!-- BOTTOM NAV -->
 
   <div class="bottom-nav">
 
@@ -263,11 +105,11 @@
 
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 
-  <!-- FIREBASE CONFIG -->
+  <!-- FIREBASE -->
 
   <script src="js/firebase.js"></script>
 
-  <!-- APP JS -->
+  <!-- APP -->
 
   <script src="js/app.js"></script>
 
