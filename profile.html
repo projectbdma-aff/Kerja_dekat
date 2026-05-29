@@ -3,11 +3,18 @@
 <head>
 
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>Profile</title>
 
-  <link rel="stylesheet" href="css/style.css">
+  <link
+    rel="stylesheet"
+    href="css/style.css"
+  >
 
 </head>
 <body>
@@ -16,99 +23,140 @@
 
     <h1>Profil Saya</h1>
 
-    <p>Kelola akun & aktivitas</p>
+    <p>Data diri pengguna</p>
 
   </div>
 
   <div class="container">
 
-    <div class="card profile-box">
+    <!-- PROFILE DATA -->
 
-      <div class="avatar">
-        A
-      </div>
+    <div id="profileData"></div>
 
-      <h2>Andi Saputra</h2>
+    <br>
 
-      <p>⭐ 4.9 • ✅ Terverifikasi</p>
-
-    </div>
+    <!-- EDIT PROFILE -->
 
     <div class="card">
 
       <div class="section-title">
-        Statistik
+        Edit Profil
       </div>
 
-      <p>Total Job: 120</p>
+      <input
+        type="text"
+        id="editName"
+        placeholder="Nama lengkap"
+      >
 
-      <br>
+      <input
+        type="tel"
+        id="editPhone"
+        placeholder="Nomor HP"
+      >
 
-      <p>Job Selesai: 118</p>
+      <input
+        type="text"
+        id="editLocation"
+        placeholder="Lokasi"
+      >
 
-      <br>
+      <input
+        type="text"
+        id="editCategory"
+        placeholder="Kategori pekerjaan"
+      >
 
-      <p>Rating: 4.9</p>
+      <input
+        type="text"
+        id="editPhoto"
+        placeholder="Link foto profile (optional)"
+      >
 
-    </div>
-
-    <div class="card">
-
-      <div class="section-title">
-        Menu
-      </div>
-
-      <button class="btn" onclick="goTo('my-jobs.html')">
-        Job Saya
+      <button
+        class="btn"
+        onclick="updateProfile()"
+      >
+        Simpan Profil
       </button>
 
       <br><br>
 
-      <button class="btn" onclick="goTo('wallet.html')">
-        Wallet
-      </button>
-
-      <br><br>
-
-      <button class="btn" onclick="goTo('settings.html')">
-        Pengaturan
+      <button
+        class="btn logout-btn"
+        onclick="logout()"
+      >
+        Logout
       </button>
 
     </div>
-
-    <button class="btn" onclick="logout()">
-      Logout
-    </button>
 
   </div>
 
+  <!-- BOTTOM NAV -->
+
   <div class="bottom-nav">
 
-    <div class="nav-item" onclick="goTo('home.html')">
+    <div
+      class="nav-item"
+      onclick="goTo('home.html')"
+    >
 
-      <div class="nav-icon">🏠</div>
+      <div class="nav-icon">
+        🏠
+      </div>
 
       Home
 
     </div>
 
-    <div class="nav-item" onclick="goTo('search.html')">
+    <div
+      class="nav-item"
+      onclick="goTo('search.html')"
+    >
 
-      <div class="nav-icon">🔎</div>
+      <div class="nav-icon">
+        🔎
+      </div>
 
       Cari
 
     </div>
 
+    <div
+      class="nav-item"
+      onclick="goTo('chat.html')"
+    >
+
+      <div class="nav-icon">
+        💬
+      </div>
+
+      Chat
+
+    </div>
+
     <div class="nav-item active">
 
-      <div class="nav-icon">👤</div>
+      <div class="nav-icon">
+        👤
+      </div>
 
       Profil
 
     </div>
 
   </div>
+
+  <!-- FIREBASE -->
+
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
+  <script src="js/firebase.js"></script>
 
   <script src="js/app.js"></script>
 
