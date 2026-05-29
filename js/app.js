@@ -4,81 +4,150 @@ function goTo(page){
   window.location.href = page;
 }
 
-// LOGIN
+// FIREBASE RECAPTCHA
 
-function loginUser(){
+window.onload = function(){
 
-  const phone = document.getElementById("phone").value;
+  if(document.getElementById('recaptcha-container')){
 
-  if(phone === ""){
+    window.recaptchaVerifier =
+      new firebase.auth.RecaptchaVerifier(
+        'recaptcha-container',
+        {
+          size: 'normal',
+          callback: function(response){
+            console.log("Recaptcha verified");
+          }
+        }
+      );
+
+    recaptchaVerifier.render();
+  }
+
+};
+
+// SEND OTP
+
+function sendOTP(){
+
+  const phoneNumber =
+    document.getElementById("phone").value;
+
+  if(phoneNumber === ""){
+
     alert("Masukkan nomor HP");
+
     return;
   }
 
-  alert("OTP dikirim");
+  const appVerifier =
+    window.recaptchaVerifier;
 
-  goTo("otp.html");
+  auth.signInWithPhoneNumber(
+    phoneNumber,
+    appVerifier
+  )
+
+  .then(function(confirmationResult){
+
+    window.confirmationResult =
+      confirmationResult;
+
+    localStorage.setItem(
+      "phoneNumber",
+      phoneNumber
+    );
+
+    alert("OTP berhasil dikirim");
+
+    goTo("otp.html");
+
+  })
+
+  .catch(function(error){
+
+    console.log(error);
+
+    alert(
+      "Gagal mengirim OTP"
+    );
+
+  });
+
 }
 
-// OTP
+// VERIFY OTP
 
 function verifyOTP(){
 
-  alert("Login berhasil");
+  const code =
+    document.getElementById("otpCode").value;
 
-  goTo("home.html");
-}
+  if(code === ""){
 
-// JOB
+    alert("Masukkan kode OTP");
 
-function submitJob(){
-
-  alert("Job berhasil diposting");
-
-  goTo("home.html");
-}
-
-function acceptJob(){
-
-  alert("Permintaan menerima job dikirim");
-}
-
-// CHAT
-
-function sendMessage(){
-
-  const input = document.getElementById("chatInput");
-
-  if(input.value === ""){
     return;
   }
 
-  alert("Pesan terkirim");
+  window.confirmationResult
+    .confirm(code)
 
-  input.value = "";
+    .then(function(result){
+
+      const user = result.user;
+
+      console.log(user);
+
+      alert("Login berhasil");
+
+      goTo("home.html");
+
+    })
+
+    .catch(function(error){
+
+      console.log(error);
+
+      alert("OTP salah");
+
+    });
+
 }
 
-// ESCROW
+// CHECK LOGIN
 
-function payNow(){
+auth.onAuthStateChanged(function(user){
 
-  alert("Membuka pembayaran");
-}
+  if(user){
 
-// REPORT
+    console.log(
+      "User login:",
+      user.phoneNumber
+    );
 
-function reportUser(){
+  }else{
 
-  alert("User berhasil dilaporkan");
-}
+    console.log(
+      "Belum login"
+    );
 
-// PROFILE
+  }
+
+});
+
+// LOGOUT
 
 function logout(){
 
-  const confirmLogout = confirm("Keluar dari akun?");
+  auth.signOut()
 
-  if(confirmLogout){
+  .then(function(){
+
+    alert("Logout berhasil");
+
     goTo("index.html");
-  }
+
+  });
+
 }
