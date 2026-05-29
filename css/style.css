@@ -237,3 +237,60 @@ select:focus{
   }
 
 }
+
+
+/* =========================
+PROFILE
+========================= */
+
+.profile-card{
+
+  text-align: center;
+
+}
+
+.profile-top{
+
+  margin-bottom: 20px;
+
+}
+
+.avatar-image{
+
+  width: 110px;
+
+  height: 110px;
+
+  border-radius: 50%;
+
+  object-fit: cover;
+
+  border: 4px solid #00b14f;
+
+}
+
+.avatar-letter{
+
+  width: 110px;
+
+  height: 110px;
+
+  border-radius: 50%;
+
+  background: #00b14f;
+
+  color: white;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  font-size: 42px;
+
+  font-weight: bold;
+
+  margin: auto;
+
+}
