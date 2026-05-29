@@ -1,208 +1,66 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Verifikasi OTP - KerjaDekat</title>
 
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: Arial, sans-serif;
-    }
+  <meta charset="UTF-8">
 
-    body {
-      background: #f5f7fa;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      color: #222;
-    }
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    .container {
-      width: 100%;
-      max-width: 400px;
-      padding: 20px;
-    }
+  <title>Verifikasi OTP</title>
 
-    .card {
-      background: white;
-      border-radius: 20px;
-      padding: 30px 25px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-      text-align: center;
-    }
+  <link rel="stylesheet" href="css/style.css">
 
-    .logo {
-      width: 80px;
-      height: 80px;
-      background: #16a34a;
-      border-radius: 50%;
-      margin: 0 auto 20px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: white;
-      font-size: 30px;
-      font-weight: bold;
-    }
-
-    h1 {
-      font-size: 26px;
-      margin-bottom: 10px;
-    }
-
-    .subtitle {
-      color: #666;
-      line-height: 1.5;
-      margin-bottom: 30px;
-      font-size: 15px;
-    }
-
-    .otp-container {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 25px;
-    }
-
-    .otp-input {
-      width: 55px;
-      height: 60px;
-      border-radius: 14px;
-      border: 1px solid #ccc;
-      text-align: center;
-      font-size: 24px;
-      font-weight: bold;
-    }
-
-    .otp-input:focus {
-      outline: none;
-      border-color: #16a34a;
-    }
-
-    .btn {
-      width: 100%;
-      padding: 15px;
-      border: none;
-      border-radius: 14px;
-      background: #16a34a;
-      color: white;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .btn:hover {
-      opacity: 0.9;
-    }
-
-    .resend {
-      margin-top: 20px;
-      font-size: 14px;
-      color: #666;
-    }
-
-    .resend span {
-      color: #16a34a;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .loading {
-      width: 40px;
-      height: 40px;
-      border: 4px solid #ddd;
-      border-top: 4px solid #16a34a;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin: 20px auto;
-      display: none;
-    }
-
-    @keyframes spin {
-      100% {
-        transform: rotate(360deg);
-      }
-    }
-  </style>
 </head>
 <body>
 
+  <div class="header">
+
+    <h1>Verifikasi OTP</h1>
+
+    <p>Masukkan kode OTP dari SMS</p>
+
+  </div>
+
   <div class="container">
+
     <div class="card">
 
-      <div class="logo">K</div>
-
-      <h1>Verifikasi OTP</h1>
-
-      <p class="subtitle">
-        Masukkan kode OTP yang telah dikirim ke nomor HP kamu
-      </p>
-
-      <div class="otp-container">
-        <input type="text" maxlength="1" class="otp-input" />
-        <input type="text" maxlength="1" class="otp-input" />
-        <input type="text" maxlength="1" class="otp-input" />
-        <input type="text" maxlength="1" class="otp-input" />
+      <div class="section-title">
+        Kode OTP
       </div>
 
-      <button class="btn" onclick="verifyOTP()">
+      <input
+        type="text"
+        id="otpCode"
+        placeholder="Masukkan 6 digit OTP"
+      >
+
+      <button
+        class="btn"
+        onclick="verifyOTP()"
+      >
         Verifikasi
       </button>
 
-      <div class="loading" id="loading"></div>
-
-      <div class="resend">
-        Tidak menerima kode? <span onclick="resendOTP()">Kirim Ulang</span>
-      </div>
-
     </div>
+
   </div>
 
-  <script>
-    const inputs = document.querySelectorAll('.otp-input');
+  <!-- FIREBASE SDK -->
 
-    inputs.forEach((input, index) => {
-      input.addEventListener('input', () => {
-        if(input.value.length === 1 && index < inputs.length - 1) {
-          inputs[index + 1].focus();
-        }
-      });
-    });
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 
-    function verifyOTP() {
-      const loading = document.getElementById('loading');
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
 
-      let otp = '';
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 
-      inputs.forEach(input => {
-        otp += input.value;
-      });
+  <!-- FIREBASE -->
 
-      if(otp.length < 4) {
-        alert('Masukkan kode OTP lengkap');
-        return;
-      }
+  <script src="js/firebase.js"></script>
 
-      loading.style.display = 'block';
+  <!-- APP JS -->
 
-      setTimeout(() => {
-        loading.style.display = 'none';
-        alert('Login berhasil');
-
-        // nanti diarahkan ke home
-        // window.location.href = 'home.html';
-      }, 2000);
-    }
-
-    function resendOTP() {
-      alert('Kode OTP berhasil dikirim ulang');
-    }
-  </script>
+  <script src="js/app.js"></script>
 
 </body>
 </html>
