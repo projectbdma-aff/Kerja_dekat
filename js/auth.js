@@ -7,12 +7,12 @@ import {
 
 // !!! SALIN DAN REPLACE DENGAN KONFIGURASI ASLI DARI FIREBASE CONSOLE ANDA !!!
 const firebaseConfig = {
-    apiKey: "AIzaSyAxxxxxxxxxxxxxxxxxxxxxxxx",
-    authDomain: "://firebaseapp.com",
-    projectId: "kerja-dekat",
-    storageBucket: "://appspot.com",
-    messagingSenderId: "1234567890",
-    appId: "1:1234567890:web:abcdef123456"
+    apiKey: "AIzaSyCxSbzpqLkjCF7LhxCsdg3xu530e0b_frs",
+    authDomain: "kerjadekat-web.firebaseapp.com",
+    projectId: "kerjadekat-web",
+    storageBucket: "kerjadekat-web.firebasestorage.app",
+    messagingSenderId: "99396133528",
+    appId: "1:99396133528:web:7a01b8d1ffa588c50da6ed"
 };
 
 // Inisialisasi Firebase
