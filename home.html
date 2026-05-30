@@ -71,42 +71,89 @@
 
   </div>
 
-  <!-- BOTTOM NAV -->
+  
+<!-- ===================================== -->
+<!-- SIDEBAR MENU -->
+<!-- ===================================== -->
 
-  <div class="bottom-nav">
+<div id="sidebar" class="sidebar">
 
-    <button
-      onclick="
-        location.href='home.html'
-      "
-      class="active-nav"
+  <!-- CLOSE -->
+
+  <div class="sidebar-header">
+
+    <h2>Menu</h2>
+
+    <span
+      class="close-btn"
+      onclick="closeSidebar()"
     >
-
-      Home
-
-    </button>
-
-    <button
-      onclick="
-        location.href='create-job.html'
-      "
-    >
-
-      Buat Job
-
-    </button>
-
-    <button
-      onclick="
-        location.href='profile.html'
-      "
-    >
-
-      Profil
-
-    </button>
+      ✖
+    </span>
 
   </div>
+
+  <!-- MENU -->
+
+  <a href="home.html">
+
+    🏠 Home
+
+  </a>
+
+  <a href="create-job.html">
+
+    ➕ Buat Job
+
+  </a>
+
+  <a href="search.html">
+
+    🔍 Cari Job
+
+  </a>
+
+  <a href="profile.html">
+
+    👤 Profile
+
+  </a>
+
+  <a
+    href="#"
+    onclick="logoutUser()"
+  >
+
+    🚪 Logout
+
+  </a>
+
+</div>
+
+<!-- ===================================== -->
+<!-- TOP HEADER -->
+<!-- ===================================== -->
+
+<div class="topbar">
+
+  <!-- MENU BUTTON -->
+
+  <span
+    class="menu-btn"
+    onclick="openSidebar()"
+  >
+
+    ☰
+
+  </span>
+
+  <h1>
+
+    Job Sekitar
+
+  </h1>
+
+</div>
 
   <!-- FIREBASE -->
 
