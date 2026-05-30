@@ -507,3 +507,76 @@ LOADING SPINNER
   margin-right:15px;
 
 }
+/* ===================================== */
+/* HEADER */
+/* ===================================== */
+
+.header{
+
+  background:#17a34a;
+
+  color:white;
+
+  padding:25px;
+
+  border-bottom-left-radius:30px;
+
+  border-bottom-right-radius:30px;
+
+}
+
+/* ===================================== */
+/* HEADER TOP */
+/* ===================================== */
+
+.header-top{
+
+  display:flex;
+
+  align-items:center;
+
+}
+
+/* ===================================== */
+/* MENU */
+/* ===================================== */
+
+.white-menu{
+
+  color:white;
+
+  font-size:34px;
+
+  margin-right:18px;
+
+  cursor:pointer;
+
+}
+
+/* ===================================== */
+/* APP TITLE */
+/* ===================================== */
+
+.app-title{
+
+  font-size:28px;
+
+  font-weight:bold;
+
+  margin:0;
+
+}
+
+/* ===================================== */
+/* APP SUBTITLE */
+/* ===================================== */
+
+.app-subtitle{
+
+  margin-top:5px;
+
+  font-size:15px;
+
+  opacity:0.9;
+
+}
