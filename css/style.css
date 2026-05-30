@@ -516,9 +516,9 @@ LOADING SPINNER
   color: white;
   
   /* PERUBAHAN UTAMA: Jarak atas-bawah dipangkas habis (Atas 10px, Bawah 8px) */
-  padding: 8px 16px 0px 16px; 
+  padding: 8px 16px 0.5px 16px; 
   
-  /* PERUBAHAN: Lengkungan dikurangi agar tidak memakan space tinggi */
+  /* PERUBAHAN:  dikurangi agar tidak memakan space tinggi */
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
   position: sticky;
