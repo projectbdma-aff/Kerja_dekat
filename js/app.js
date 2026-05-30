@@ -731,6 +731,205 @@ function updateProfile(){
 
 }
 
+
+// =====================================
+// SUBMIT REVIEW
+// =====================================
+
+function submitReview(){
+
+  const user =
+    auth.currentUser;
+
+  if(!user){
+
+    alert(
+      "Harus login"
+    );
+
+    return;
+
+  }
+
+  // USER YANG DIREVIEW
+
+  const toUserId =
+    localStorage.getItem(
+      "reviewUserId"
+    );
+
+  // JOB ID
+
+  const jobId =
+    localStorage.getItem(
+      "reviewJobId"
+    );
+
+  // RATING
+
+  const rating =
+    parseInt(
+      document.getElementById(
+        "reviewRating"
+      ).value
+    );
+
+  // COMMENT
+
+  const comment =
+    document.getElementById(
+      "reviewComment"
+    ).value;
+
+  if(comment === ""){
+
+    alert(
+      "Tulis ulasan"
+    );
+
+    return;
+
+  }
+
+  // SAVE REVIEW
+
+  db.collection("reviews")
+
+  .add({
+
+    fromUserId:
+      user.uid,
+
+    toUserId:
+      toUserId,
+
+    jobId:
+      jobId,
+
+    rating:
+      rating,
+
+    comment:
+      comment,
+
+    createdAt:
+      firebase.firestore
+      .FieldValue
+      .serverTimestamp()
+
+  })
+
+  .then(function(){
+
+    // UPDATE USER RATING
+
+    updateUserRating(
+      toUserId
+    );
+
+    alert(
+      "Ulasan berhasil dikirim"
+    );
+
+    goTo("profile.html");
+
+  })
+
+  .catch(function(error){
+
+    console.log(error);
+
+    alert(
+      "Gagal mengirim ulasan"
+    );
+
+  });
+
+}
+
+// =====================================
+// UPDATE USER RATING
+// =====================================
+
+function updateUserRating(userId){
+
+  db.collection("reviews")
+
+  .where(
+    "toUserId",
+    "==",
+    userId
+  )
+
+  .get()
+
+  .then(function(snapshot){
+
+    let total =
+      0;
+
+    let count =
+      snapshot.size;
+
+    snapshot.forEach(function(doc){
+
+      total +=
+        doc.data().rating;
+
+    });
+
+    // BELUM ADA REVIEW
+
+    if(count === 0){
+
+      db.collection("users")
+
+      .doc(userId)
+
+      .update({
+
+        averageRating:
+          0,
+
+        totalReviews:
+          0
+
+      });
+
+      return;
+
+    }
+
+    // RATA RATA
+
+    const average =
+      (
+        total / count
+      ).toFixed(1);
+
+    // UPDATE USER
+
+    db.collection("users")
+
+    .doc(userId)
+
+    .update({
+
+      averageRating:
+        parseFloat(
+          average
+        ),
+
+      totalReviews:
+        count
+
+    });
+
+  });
+
+}
+
+
 // =====================================
 // AUTO LOAD
 // =====================================
