@@ -557,9 +557,17 @@ function loadProfile(){
 
             <br>
 
-            <p>
-              ⭐ ${data.rating}
-            </p>
+             <p>
+
+               ${
+               data.totalReviews > 0
+               ?
+              `⭐ ${data.averageRating} (${data.totalReviews} ulasan)`
+               :
+               `Belum ada ulasan`
+                 }
+
+             </p>
 
           </div>
 
