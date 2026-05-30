@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Beri Ulasan</title>
+
+  <link
+    rel="stylesheet"
+    href="css/style.css"
+  >
+
+</head>
+<body>
+
+  <div class="header">
+
+    <h1>Ulasan Pengguna</h1>
+
+    <p>Beri rating & ulasan</p>
+
+  </div>
+
+  <div class="container">
+
+    <div class="card">
+
+      <div class="section-title">
+
+        Rating
+
+      </div>
+
+      <select id="reviewRating">
+
+        <option value="5">
+          ⭐⭐⭐⭐⭐ 5
+        </option>
+
+        <option value="4">
+          ⭐⭐⭐⭐ 4
+        </option>
+
+        <option value="3">
+          ⭐⭐⭐ 3
+        </option>
+
+        <option value="2">
+          ⭐⭐ 2
+        </option>
+
+        <option value="1">
+          ⭐ 1
+        </option>
+
+      </select>
+
+      <br><br>
+
+      <textarea
+        id="reviewComment"
+        placeholder="Tulis ulasan..."
+      ></textarea>
+
+      <br><br>
+
+      <button
+        class="btn"
+        onclick="submitReview()"
+      >
+
+        Kirim Ulasan
+
+      </button>
+
+    </div>
+
+  </div>
+
+  <!-- FIREBASE -->
+
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
+  <script src="js/firebase.js"></script>
+
+  <script src="js/app.js"></script>
+
+</body>
+</html>
