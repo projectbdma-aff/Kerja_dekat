@@ -44,6 +44,11 @@ function registerUser(){
     "category"
   ).value;
 
+  const whatsapp =
+  document.getElementById(
+    "registerWhatsapp"
+  ).value;
+
 // CUSTOM
 
 if(category === "Custom"){
@@ -109,6 +114,14 @@ if(category === "Custom"){
       photo: "",
 
       rating: 5,
+
+      whatsapp: whatsapp,
+
+isVerified: false,
+
+isPremium: false,
+
+completedJobs: 0,
 
       createdAt:
         firebase.firestore
@@ -994,6 +1007,113 @@ function toggleCustomCategory(){
       "none";
 
   }
+
+}
+
+// =====================================
+// APPLY JOB
+// =====================================
+
+function applyJob(jobId, ownerId){
+
+  const user =
+    auth.currentUser;
+
+  if(!user){
+
+    alert(
+      "Harus login"
+    );
+
+    return;
+
+  }
+
+  // CEK JANGAN MELAMAR SENDIRI
+
+  if(user.uid === ownerId){
+
+    alert(
+      "Tidak bisa melamar job sendiri"
+    );
+
+    return;
+
+  }
+
+  // SAVE APPLICATION
+
+  db.collection("applicants")
+
+  .add({
+
+    jobId: jobId,
+
+    workerId: user.uid,
+
+    ownerId: ownerId,
+
+    createdAt:
+      firebase.firestore
+      .FieldValue
+      .serverTimestamp()
+
+  })
+
+  .then(function(){
+
+    // UPDATE TOTAL
+
+    updateApplicantCount(jobId);
+
+    alert(
+      "Berhasil melamar job"
+    );
+
+  })
+
+  .catch(function(error){
+
+    console.log(error);
+
+    alert(
+      "Gagal melamar"
+    );
+
+  });
+
+}
+
+// =====================================
+// UPDATE APPLICANT COUNT
+// =====================================
+
+function updateApplicantCount(jobId){
+
+  db.collection("applicants")
+
+  .where(
+    "jobId",
+    "==",
+    jobId
+  )
+
+  .get()
+
+  .then(function(snapshot){
+
+    db.collection("jobs")
+
+    .doc(jobId)
+
+    .update({
+
+      totalApplicants:
+        snapshot.size
+
+    });
+
+  });
 
 }
 
