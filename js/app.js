@@ -456,6 +456,23 @@ function loadProfile(){
 
   }
 
+  
+  // LOADING SPINNER
+
+  profileContainer.innerHTML = `
+
+    <div class="loading-box">
+
+      <div class="spinner"></div>
+
+      <p>
+        Loading profile...
+      </p>
+
+    </div>
+
+  `;
+
   auth.onAuthStateChanged(
     function(user){
 
@@ -519,22 +536,52 @@ function loadProfile(){
 
         // RENDER PROFILE
 
-        profileContainer.innerHTML = `
-
-  <div class="loading-box">
-
-    <div class="spinner"></div>
-
-    <p>
-      Loading profile...
-    </p>
-
-  </div>
-
-`;
         
-auth.onAuthStateChanged(
-    function(user){
+      profileContainer.innerHTML = `
+
+          <div class="card profile-card">
+
+            ${avatar}
+
+            <br><br>
+
+            <h2>
+              ${data.name}
+            </h2>
+
+            <br>
+
+            <p>
+              📧 ${data.email}
+            </p>
+
+            <br>
+
+            <p>
+              📱 ${data.phone}
+            </p>
+
+            <br>
+
+            <p>
+              📍 ${data.location}
+            </p>
+
+            <br>
+
+            <p>
+              💼 ${data.category}
+            </p>
+
+            <br>
+
+            <p>
+              ⭐ ${data.rating}
+            </p>
+
+          </div>
+
+        `;
 
       
         // AUTO FILL EDIT FORM
