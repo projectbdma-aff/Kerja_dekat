@@ -9,7 +9,7 @@ function goTo(page){
 }
 
 // =====================================
-// REGISTER
+// REGISTER USER
 // =====================================
 
 function registerUser(){
@@ -44,6 +44,8 @@ function registerUser(){
       "registerCategory"
     ).value;
 
+  // VALIDATION
+
   if(
     name === "" ||
     email === "" ||
@@ -58,21 +60,24 @@ function registerUser(){
     );
 
     return;
+
   }
+
+  // REGISTER FIREBASE AUTH
 
   auth.createUserWithEmailAndPassword(
     email,
     password
   )
 
-  .then(function(result){
+  .then(async function(result){
 
     const user =
       result.user;
 
-    // SAVE USER DATA
+    // SAVE USER TO FIRESTORE
 
-    db.collection("users")
+    await db.collection("users")
 
     .doc(user.uid)
 
@@ -99,17 +104,13 @@ function registerUser(){
         .FieldValue
         .serverTimestamp()
 
-    })
-
-    .then(function(){
-
-      alert(
-        "Pendaftaran berhasil"
-      );
-
-      goTo("home.html");
-
     });
+
+    alert(
+      "Register berhasil"
+    );
+
+    goTo("home.html");
 
   })
 
@@ -117,16 +118,38 @@ function registerUser(){
 
     console.log(error);
 
-    alert(
-      error.message
-    );
+    if(
+      error.code ===
+      "auth/email-already-in-use"
+    ){
+
+      alert(
+        "Email sudah terdaftar"
+      );
+
+    }else if(
+      error.code ===
+      "auth/weak-password"
+    ){
+
+      alert(
+        "Password minimal 6 karakter"
+      );
+
+    }else{
+
+      alert(
+        error.message
+      );
+
+    }
 
   });
 
 }
 
 // =====================================
-// LOGIN
+// LOGIN USER
 // =====================================
 
 function loginUser(){
@@ -151,6 +174,7 @@ function loginUser(){
     );
 
     return;
+
   }
 
   auth.signInWithEmailAndPassword(
@@ -173,7 +197,7 @@ function loginUser(){
     console.log(error);
 
     alert(
-      error.message
+      "Email atau password salah"
     );
 
   });
@@ -184,24 +208,26 @@ function loginUser(){
 // CHECK LOGIN
 // =====================================
 
-auth.onAuthStateChanged(function(user){
+auth.onAuthStateChanged(
+  function(user){
 
-  if(user){
+    if(user){
 
-    console.log(
-      "Login:",
-      user.email
-    );
+      console.log(
+        "Login:",
+        user.email
+      );
 
-  }else{
+    }else{
 
-    console.log(
-      "Belum login"
-    );
+      console.log(
+        "Belum login"
+      );
+
+    }
 
   }
-
-});
+);
 
 // =====================================
 // LOGOUT
@@ -259,6 +285,7 @@ function createJob(){
     );
 
     return;
+
   }
 
   if(
@@ -273,6 +300,7 @@ function createJob(){
     );
 
     return;
+
   }
 
   db.collection("jobs")
@@ -336,6 +364,7 @@ function loadJobs(){
   if(!jobList){
 
     return;
+
   }
 
   db.collection("jobs")
@@ -396,7 +425,7 @@ function loadJobs(){
 }
 
 // =====================================
-// OPEN JOB DETAIL
+// OPEN DETAIL JOB
 // =====================================
 
 function openJob(jobId){
@@ -411,9 +440,7 @@ function openJob(jobId){
 }
 
 // =====================================
-// LOAD PROFILE
-// // =====================================
-// LOAD PROFILE REALTIME FINAL
+// LOAD PROFILE FINAL
 // =====================================
 
 function loadProfile(){
@@ -447,15 +474,16 @@ function loadProfile(){
         if(!doc.exists){
 
           profileContainer.innerHTML =
-            "<p>Profile tidak ditemukan</p>";
+            "Profile tidak ditemukan";
 
           return;
 
         }
 
-        const data = doc.data();
+        const data =
+          doc.data();
 
-        let avatarHTML = "";
+        let avatar = "";
 
         // FOTO PROFILE
 
@@ -464,7 +492,7 @@ function loadProfile(){
           data.photo !== ""
         ){
 
-          avatarHTML = `
+          avatar = `
 
             <img
               src="${data.photo}"
@@ -477,47 +505,57 @@ function loadProfile(){
 
           // FALLBACK HURUF
 
-          avatarHTML = `
+          avatar = `
 
             <div class="avatar-letter">
 
               ${data.name.charAt(0)}
-
+              
             </div>
 
           `;
 
         }
 
+        // RENDER PROFILE
+
         profileContainer.innerHTML = `
 
           <div class="card profile-card">
 
-            <div class="profile-top">
+            ${avatar}
 
-              ${avatarHTML}
-
-            </div>
+            <br><br>
 
             <h2>
               ${data.name}
             </h2>
 
+            <br>
+
             <p>
               📧 ${data.email}
             </p>
+
+            <br>
 
             <p>
               📱 ${data.phone}
             </p>
 
+            <br>
+
             <p>
               📍 ${data.location}
             </p>
 
+            <br>
+
             <p>
               💼 ${data.category}
             </p>
+
+            <br>
 
             <p>
               ⭐ ${data.rating}
@@ -527,155 +565,72 @@ function loadProfile(){
 
         `;
 
-        // AUTO FILL FORM
+        // AUTO FILL EDIT FORM
 
-        document.getElementById(
-          "editName"
-        ).value =
-          data.name || "";
+        const editName =
+          document.getElementById(
+            "editName"
+          );
 
-        document.getElementById(
-          "editPhone"
-        ).value =
-          data.phone || "";
+        const editPhone =
+          document.getElementById(
+            "editPhone"
+          );
 
-        document.getElementById(
-          "editLocation"
-        ).value =
-          data.location || "";
+        const editLocation =
+          document.getElementById(
+            "editLocation"
+          );
 
-        document.getElementById(
-          "editCategory"
-        ).value =
-          data.category || "";
+        const editCategory =
+          document.getElementById(
+            "editCategory"
+          );
 
-        document.getElementById(
-          "editPhoto"
-        ).value =
-          data.photo || "";
+        const editPhoto =
+          document.getElementById(
+            "editPhoto"
+          );
+
+        if(editName){
+
+          editName.value =
+            data.name || "";
+
+        }
+
+        if(editPhone){
+
+          editPhone.value =
+            data.phone || "";
+
+        }
+
+        if(editLocation){
+
+          editLocation.value =
+            data.location || "";
+
+        }
+
+        if(editCategory){
+
+          editCategory.value =
+            data.category || "";
+
+        }
+
+        if(editPhoto){
+
+          editPhoto.value =
+            data.photo || "";
+
+        }
 
       });
 
     }
   );
-
-}
-
-// =====================================
-// LOAD PROFILE REALTIME
-// =====================================
-
-function loadProfile(){
-
-  const profileContainer =
-    document.getElementById(
-      "profileData"
-    );
-
-  if(!profileContainer){
-
-    return;
-  }
-
-  const user =
-    auth.currentUser;
-
-  if(!user){
-
-    return;
-  }
-
-  db.collection("users")
-
-  .doc(user.uid)
-
-  .onSnapshot(function(doc){
-
-    const data =
-      doc.data();
-
-    // PROFILE VIEW
-
-    profileContainer.innerHTML = `
-
-      <div class="card profile-box">
-
-        <div class="profile-avatar">
-
-          ${
-            data.photo
-            ?
-            `<img
-              src="${data.photo}"
-              class="avatar-img"
-            >`
-            :
-            data.name.charAt(0)
-          }
-
-        </div>
-
-        <h2>
-          ${data.name}
-        </h2>
-
-        <br>
-
-        <p>
-          📧 ${data.email}
-        </p>
-
-        <br>
-
-        <p>
-          📱 ${data.phone}
-        </p>
-
-        <br>
-
-        <p>
-          📍 ${data.location}
-        </p>
-
-        <br>
-
-        <p>
-          💼 ${data.category}
-        </p>
-
-        <br>
-
-        <p>
-          ⭐ ${data.rating}
-        </p>
-
-      </div>
-
-    `;
-
-    // AUTO FILL EDIT FORM
-
-    document.getElementById(
-      "editName"
-    ).value = data.name;
-
-    document.getElementById(
-      "editPhone"
-    ).value = data.phone;
-
-    document.getElementById(
-      "editLocation"
-    ).value = data.location;
-
-    document.getElementById(
-      "editCategory"
-    ).value = data.category;
-
-    document.getElementById(
-      "editPhoto"
-    ).value = data.photo;
-
-  });
 
 }
 
@@ -695,6 +650,7 @@ function updateProfile(){
     );
 
     return;
+
   }
 
   const name =
@@ -730,10 +686,11 @@ function updateProfile(){
   ){
 
     alert(
-      "Lengkapi data profile"
+      "Lengkapi profile"
     );
 
     return;
+
   }
 
   db.collection("users")
@@ -757,7 +714,7 @@ function updateProfile(){
   .then(function(){
 
     alert(
-      "Profil berhasil diperbarui"
+      "Profile berhasil diperbarui"
     );
 
   })
@@ -773,11 +730,6 @@ function updateProfile(){
   });
 
 }
-
-
-
-
-
 
 // =====================================
 // AUTO LOAD
