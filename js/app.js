@@ -1117,6 +1117,46 @@ function updateApplicantCount(jobId){
 
 }
 
+// =====================================
+// OPEN SIDEBAR
+// =====================================
+
+function openSidebar(){
+
+  document.getElementById(
+    "sidebar"
+  ).style.width = "250px";
+
+}
+
+// =====================================
+// CLOSE SIDEBAR
+// =====================================
+
+function closeSidebar(){
+
+  document.getElementById(
+    "sidebar"
+  ).style.width = "0";
+
+}
+
+// =====================================
+// LOGOUT
+// =====================================
+
+function logoutUser(){
+
+  auth.signOut()
+
+  .then(function(){
+
+    location.href =
+      "index.html";
+
+  });
+
+}
 
 // =====================================
 // AUTO LOAD
