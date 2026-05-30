@@ -567,253 +567,73 @@ function loadProfile(){
 
         // AUTO FILL EDIT FORM
 
-// =====================================
-// LOAD PROFILE SUPER FAST
-// =====================================
+        const editName =
+          document.getElementById(
+            "editName"
+          );
 
-function loadProfile(){
+        const editPhone =
+          document.getElementById(
+            "editPhone"
+          );
 
-  const profileContainer =
-    document.getElementById(
-      "profileData"
-    );
+        const editLocation =
+          document.getElementById(
+            "editLocation"
+          );
 
-  if(!profileContainer){
+        const editCategory =
+          document.getElementById(
+            "editCategory"
+          );
 
-    return;
+        const editPhoto =
+          document.getElementById(
+            "editPhoto"
+          );
 
-  }
+        if(editName){
 
-  // LOADING UI
-
-  profileContainer.innerHTML = `
-
-    <div class="card profile-card">
-
-      <div class="avatar-letter">
-        ...
-      </div>
-
-      <br><br>
-
-      <h2>Loading...</h2>
-
-    </div>
-
-  `;
-
-  // AUTH
-
-  auth.onAuthStateChanged(
-    function(user){
-
-      if(!user){
-
-        return;
-
-      }
-
-      // FIRESTORE
-
-      db.collection("users")
-
-      .doc(user.uid)
-
-      .onSnapshot(function(doc){
-
-        if(!doc.exists){
-
-          profileContainer.innerHTML =
-            "Profile tidak ditemukan";
-
-          return;
+          editName.value =
+            data.name || "";
 
         }
 
-        const data =
-          doc.data();
+        if(editPhone){
 
-        // SAVE CACHE
+          editPhone.value =
+            data.phone || "";
 
-        localStorage.setItem(
-          "profileCache",
-          JSON.stringify(data)
-        );
+        }
 
-        renderProfile(data);
+        if(editLocation){
+
+          editLocation.value =
+            data.location || "";
+
+        }
+
+        if(editCategory){
+
+          editCategory.value =
+            data.category || "";
+
+        }
+
+        if(editPhoto){
+
+          editPhoto.value =
+            data.photo || "";
+
+        }
 
       });
-
-      // LOAD CACHE DULU
-
-      const cache =
-        localStorage.getItem(
-          "profileCache"
-        );
-
-      if(cache){
-
-        renderProfile(
-          JSON.parse(cache)
-        );
-
-      }
 
     }
   );
 
 }
 
-// =====================================
-// RENDER PROFILE
-// =====================================
-
-function renderProfile(data){
-
-  const profileContainer =
-    document.getElementById(
-      "profileData"
-    );
-
-  let avatar = "";
-
-  if(
-    data.photo &&
-    data.photo !== ""
-  ){
-
-    avatar = `
-
-      <img
-        src="${data.photo}"
-        class="avatar-image"
-      >
-
-    `;
-
-  }else{
-
-    avatar = `
-
-      <div class="avatar-letter">
-
-        ${data.name.charAt(0)}
-
-      </div>
-
-    `;
-
-  }
-
-  profileContainer.innerHTML = `
-
-    <div class="card profile-card">
-
-      ${avatar}
-
-      <br><br>
-
-      <h2>
-        ${data.name}
-      </h2>
-
-      <br>
-
-      <p>
-        📧 ${data.email}
-      </p>
-
-      <br>
-
-      <p>
-        📱 ${data.phone}
-      </p>
-
-      <br>
-
-      <p>
-        📍 ${data.location}
-      </p>
-
-      <br>
-
-      <p>
-        💼 ${data.category}
-      </p>
-
-      <br>
-
-      <p>
-        ⭐ ${data.rating}
-      </p>
-
-    </div>
-
-  `;
-
-  // AUTO FILL FORM
-
-  const editName =
-    document.getElementById(
-      "editName"
-    );
-
-  const editPhone =
-    document.getElementById(
-      "editPhone"
-    );
-
-  const editLocation =
-    document.getElementById(
-      "editLocation"
-    );
-
-  const editCategory =
-    document.getElementById(
-      "editCategory"
-    );
-
-  const editPhoto =
-    document.getElementById(
-      "editPhoto"
-    );
-
-  if(editName){
-
-    editName.value =
-      data.name || "";
-
-  }
-
-  if(editPhone){
-
-    editPhone.value =
-      data.phone || "";
-
-  }
-
-  if(editLocation){
-
-    editLocation.value =
-      data.location || "";
-
-  }
-
-  if(editCategory){
-
-    editCategory.value =
-      data.category || "";
-
-  }
-
-  if(editPhoto){
-
-    editPhoto.value =
-      data.photo || "";
-
-  }
-
-}
 // =====================================
 // UPDATE PROFILE
 // =====================================
