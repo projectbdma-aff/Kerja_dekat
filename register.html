@@ -59,29 +59,55 @@
         placeholder="Lokasi / Alamat"
       >
 
-      <select id="registerCategory">
+      <select
+  id="category"
+  onchange="toggleCustomCategory()"
+>
 
-        <option value="">
-          Pilih kategori pekerjaan
-        </option>
+  <option value="">
+    Pilih kategori
+  </option>
 
-        <option>
-          Kurir
-        </option>
+  <option value="Umum">
+    Umum
+  </option>
 
-        <option>
-          Angkut Barang
-        </option>
+  <option value="Cleaning">
+    Cleaning
+  </option>
 
-        <option>
-          Bersih Rumah
-        </option>
+  <option value="Teknisi">
+    Teknisi
+  </option>
 
-        <option>
-          Servis
-        </option>
+  <option value="Programmer">
+    Programmer
+  </option>
 
-      </select>
+  <option value="Design Grafis">
+    Design Grafis
+  </option>
+
+  <option value="Driver">
+    Driver
+  </option>
+
+  <option value="Service AC">
+    Service AC
+  </option>
+
+  <option value="Custom">
+    Custom
+  </option>
+
+</select>
+
+      <input
+  type="text"
+  id="customCategory"
+  placeholder="Tulis kategori sendiri"
+  style="display:none;"
+>
 
       <button
         class="btn"
