@@ -521,57 +521,17 @@ function loadProfile(){
 
         profileContainer.innerHTML = `
 
-          <div class="card profile-card">
+  <div class="loading-box">
 
-            ${avatar}
+    <div class="spinner"></div>
 
-            <br><br>
+    <p>
+      Loading profile...
+    </p>
 
-            <h2>
-              ${data.name}
-            </h2>
+  </div>
 
-            <br>
-
-            <p>
-              📧 ${data.email}
-            </p>
-
-            <br>
-
-            <p>
-              📱 ${data.phone}
-            </p>
-
-            <br>
-
-            <p>
-              📍 ${data.location}
-            </p>
-
-            <br>
-
-            <p>
-              💼 ${data.category}
-            </p>
-
-            <br>
-
-             <p>
-
-               ${
-               data.totalReviews > 0
-               ?
-              `⭐ ${data.averageRating} (${data.totalReviews} ulasan)`
-               :
-               `Belum ada ulasan`
-                 }
-
-             </p>
-
-          </div>
-
-        `;
+`;
 
         // AUTO FILL EDIT FORM
 
