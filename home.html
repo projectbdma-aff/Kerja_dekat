@@ -19,97 +19,114 @@
 </head>
 <body>
 
-  
   <!-- ===================================== -->
-<!-- SIDEBAR MENU -->
-<!-- ===================================== -->
+  <!-- SIDEBAR -->
+  <!-- ===================================== -->
 
-<div id="sidebar" class="sidebar">
+  <div id="sidebar" class="sidebar">
 
-  <!-- CLOSE -->
+    <!-- HEADER -->
 
-  <div class="sidebar-header">
+    <div class="sidebar-header">
 
-    <h2>Menu</h2>
+      <h2>Menu</h2>
 
-    <span
-      class="close-btn"
-      onclick="closeSidebar()"
+      <span
+        class="close-btn"
+        onclick="closeSidebar()"
+      >
+
+        ✖
+
+      </span>
+
+    </div>
+
+    <!-- MENU -->
+
+    <a href="home.html">
+
+      🏠 Home
+
+    </a>
+
+    <a href="create-job.html">
+
+      ➕ Buat Job
+
+    </a>
+
+    <a href="search.html">
+
+      🔍 Cari Job
+
+    </a>
+
+    <a href="profile.html">
+
+      👤 Profile
+
+    </a>
+
+    <a
+      href="#"
+      onclick="logoutUser()"
     >
-      ✖
-    </span>
+
+      🚪 Logout
+
+    </a>
 
   </div>
 
-  <!-- MENU -->
+  <!-- ===================================== -->
+  <!-- TOPBAR -->
+  <!-- ===================================== -->
 
-  <a href="home.html">
+  <div class="topbar">
 
-    🏠 Home
+    <!-- MENU BUTTON -->
 
-  </a>
+    <span
+      class="menu-btn"
+      onclick="openSidebar()"
+    >
 
-  <a href="create-job.html">
+      ☰
 
-    ➕ Buat Job
+    </span>
 
-  </a>
+    <h1>
 
-  <a href="search.html">
+      Job Sekitar
 
-    🔍 Cari Job
+    </h1>
 
-  </a>
+  </div>
 
-  <a href="profile.html">
-
-    👤 Profile
-
-  </a>
-
-  <a
-    href="#"
-    onclick="logoutUser()"
-  >
-
-    🚪 Logout
-
-  </a>
-
-</div>
-
-<!-- ===================================== -->
-<!-- TOP HEADER -->
-<!-- ===================================== -->
-
-<div class="topbar">
-
-  <!-- MENU BUTTON -->
-
-  <span
-    class="menu-btn"
-    onclick="openSidebar()"
-  >
-
-    ☰
-
+  <!-- ===================================== -->
   <!-- HEADER -->
+  <!-- ===================================== -->
 
   <div class="header">
 
-    <h1>Job Sekitar</h1>
+    <h2>
+
+      Cari Bantuan & Pekerjaan
+
+    </h2>
 
     <p>
-      Cari bantuan & pekerjaan lokal
+
+      Temukan pekerjaan lokal sekitar kamu
+
     </p>
 
   </div>
 
-    
-
-</div>
-
+  <!-- ===================================== -->
   <!-- SEARCH -->
+  <!-- ===================================== -->
 
   <div class="container">
 
@@ -122,26 +139,34 @@
 
   </div>
 
-  <!-- JOB LIST -->
+  <!-- ===================================== -->
+  <!-- JOBS -->
+  <!-- ===================================== -->
 
   <div
     class="container"
     id="jobsContainer"
   >
 
+    <!-- LOADING -->
+
     <div class="loading-box">
 
       <div class="spinner"></div>
 
       <p>
+
         Loading jobs...
+
       </p>
 
     </div>
 
   </div>
 
-  <!-- BANNER IKLAN -->
+  <!-- ===================================== -->
+  <!-- ADS -->
+  <!-- ===================================== -->
 
   <div class="ads-banner">
 
@@ -149,10 +174,9 @@
 
   </div>
 
-  
-
-
+  <!-- ===================================== -->
   <!-- FIREBASE -->
+  <!-- ===================================== -->
 
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 
@@ -160,9 +184,17 @@
 
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 
+  <!-- FIREBASE CONFIG -->
+
   <script src="js/firebase.js"></script>
 
+  <!-- APP -->
+
   <script src="js/app.js"></script>
+
+  <!-- ===================================== -->
+  <!-- HOME SCRIPT -->
+  <!-- ===================================== -->
 
   <script>
 
@@ -176,8 +208,6 @@
         document.getElementById(
           "jobsContainer"
         );
-
-      // REALTIME
 
       db.collection("jobs")
 
@@ -197,7 +227,9 @@
             <div class="card">
 
               <p>
+
                 Belum ada job
+
               </p>
 
             </div>
@@ -222,7 +254,7 @@
           const jobId =
             doc.id;
 
-          // USER DATA
+          // USER
 
           const userDoc =
             await db.collection("users")
@@ -280,7 +312,7 @@
 
           }
 
-          // CARD
+          // JOB CARD
 
           container.innerHTML += `
 
@@ -398,7 +430,7 @@
     }
 
     // =====================================
-    // SEARCH JOBS
+    // SEARCH JOB
     // =====================================
 
     function searchJobs(){
@@ -418,7 +450,9 @@
         const text =
           card.innerText.toLowerCase();
 
-        if(text.includes(input)){
+        if(
+          text.includes(input)
+        ){
 
           card.style.display =
             "block";
@@ -441,6 +475,8 @@
     loadJobs();
 
   </script>
+
+
   <!-- FIREBASE -->
 
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
