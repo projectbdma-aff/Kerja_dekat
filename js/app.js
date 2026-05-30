@@ -532,7 +532,11 @@ function loadProfile(){
   </div>
 
 `;
+        
+auth.onAuthStateChanged(
+    function(user){
 
+      
         // AUTO FILL EDIT FORM
 
         const editName =
