@@ -4,41 +4,70 @@
 
   <meta charset="UTF-8">
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
-  <title>KerjaDekat Home</title>
+  <title>Home</title>
 
-  <link rel="stylesheet" href="css/style.css">
+  <link
+    rel="stylesheet"
+    href="css/style.css"
+  >
 
 </head>
 <body>
 
+  <!-- HEADER -->
+
   <div class="header">
 
-    <h1>KerjaDekat</h1>
+    <h1>Job Sekitar</h1>
 
-    <p>Cari kerja atau bantuan sekitar</p>
+    <p>
+      Cari bantuan & pekerjaan lokal
+    </p>
 
   </div>
 
+  <!-- SEARCH -->
+
   <div class="container">
 
-    <button
-      class="btn"
-      onclick="goTo('create-job.html')"
+    <input
+      type="text"
+      id="searchInput"
+      placeholder="Cari job..."
+      onkeyup="searchJobs()"
     >
-      + Buat Job
-    </button>
 
-    <br><br>
+  </div>
 
-    <div class="section-title">
-      Job Terbaru
+  <!-- JOB LIST -->
+
+  <div
+    class="container"
+    id="jobsContainer"
+  >
+
+    <div class="loading-box">
+
+      <div class="spinner"></div>
+
+      <p>
+        Loading jobs...
+      </p>
+
     </div>
 
-    <!-- JOB LIST -->
+  </div>
 
-    <div id="jobList"></div>
+  <!-- BANNER IKLAN -->
+
+  <div class="ads-banner">
+
+    Iklan 320x50
 
   </div>
 
@@ -46,58 +75,40 @@
 
   <div class="bottom-nav">
 
-    <div class="nav-item active">
-
-      <div class="nav-icon">
-        🏠
-      </div>
+    <button
+      onclick="
+        location.href='home.html'
+      "
+      class="active-nav"
+    >
 
       Home
 
-    </div>
+    </button>
 
-    <div
-      class="nav-item"
-      onclick="goTo('search.html')"
+    <button
+      onclick="
+        location.href='create-job.html'
+      "
     >
 
-      <div class="nav-icon">
-        🔎
-      </div>
+      Buat Job
 
-      Cari
+    </button>
 
-    </div>
-
-    <div
-      class="nav-item"
-      onclick="goTo('chat.html')"
+    <button
+      onclick="
+        location.href='profile.html'
+      "
     >
-
-      <div class="nav-icon">
-        💬
-      </div>
-
-      Chat
-
-    </div>
-
-    <div
-      class="nav-item"
-      onclick="goTo('profile.html')"
-    >
-
-      <div class="nav-icon">
-        👤
-      </div>
 
       Profil
 
-    </div>
+    </button>
 
   </div>
 
-  <!-- FIREBASE SDK -->
+  <!-- FIREBASE -->
 
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 
@@ -105,13 +116,298 @@
 
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 
-  <!-- FIREBASE -->
-
   <script src="js/firebase.js"></script>
 
-  <!-- APP -->
-
   <script src="js/app.js"></script>
+
+  <script>
+
+    // =====================================
+    // LOAD JOBS REALTIME
+    // =====================================
+
+    function loadJobs(){
+
+      const container =
+        document.getElementById(
+          "jobsContainer"
+        );
+
+      // REALTIME
+
+      db.collection("jobs")
+
+      .orderBy(
+        "createdAt",
+        "desc"
+      )
+
+      .onSnapshot(async function(snapshot){
+
+        // EMPTY
+
+        if(snapshot.empty){
+
+          container.innerHTML = `
+
+            <div class="card">
+
+              <p>
+                Belum ada job
+              </p>
+
+            </div>
+
+          `;
+
+          return;
+
+        }
+
+        // RESET
+
+        container.innerHTML = "";
+
+        // LOOP JOBS
+
+        for(const doc of snapshot.docs){
+
+          const job =
+            doc.data();
+
+          const jobId =
+            doc.id;
+
+          // USER DATA
+
+          const userDoc =
+            await db.collection("users")
+
+            .doc(job.userId)
+
+            .get();
+
+          const user =
+            userDoc.data();
+
+          // BADGE
+
+          let badge = "";
+
+          if(user.isPremium){
+
+            badge = "🥇";
+
+          }else if(
+            user.isVerified
+          ){
+
+            badge = "✔️";
+
+          }
+
+          // RATING
+
+          let ratingText =
+            "Belum ada ulasan";
+
+          if(
+            user.totalReviews > 0
+          ){
+
+            ratingText = `
+              ⭐ ${user.averageRating}
+              (${user.totalReviews})
+            `;
+
+          }
+
+          // STATUS
+
+          let statusText = `
+            🟢 Masih Dibuka
+          `;
+
+          if(job.status === "closed"){
+
+            statusText = `
+              🔴 Sudah Dipilih
+            `;
+
+          }
+
+          // CARD
+
+          container.innerHTML += `
+
+            <div class="card job-card">
+
+              <h2>
+
+                ${job.title}
+
+              </h2>
+
+              <br>
+
+              <p>
+
+                ${job.description}
+
+              </p>
+
+              <br>
+
+              <p>
+
+                📍 ${job.location}
+
+              </p>
+
+              <br>
+
+              <p>
+
+                💰 Rp${job.price}
+
+              </p>
+
+              <br>
+
+              <p>
+
+                👥
+                ${job.totalApplicants || 0}
+                Pelamar
+
+              </p>
+
+              <br>
+
+              <p>
+
+                ${statusText}
+
+              </p>
+
+              <br>
+
+              <hr>
+
+              <br>
+
+              <p>
+
+                ${user.name}
+
+                ${badge}
+
+              </p>
+
+              <br>
+
+              <p>
+
+                ${ratingText}
+
+              </p>
+
+              <br>
+
+              <button
+                class="btn"
+                onclick="
+                  openDetailJob(
+                    '${jobId}'
+                  )
+                "
+              >
+
+                Lihat Detail
+
+              </button>
+
+            </div>
+
+          `;
+
+        }
+
+      });
+
+    }
+
+    // =====================================
+    // OPEN DETAIL JOB
+    // =====================================
+
+    function openDetailJob(jobId){
+
+      localStorage.setItem(
+        "selectedJobId",
+        jobId
+      );
+
+      location.href =
+        "detail-job.html";
+
+    }
+
+    // =====================================
+    // SEARCH JOBS
+    // =====================================
+
+    function searchJobs(){
+
+      const input =
+        document.getElementById(
+          "searchInput"
+        ).value.toLowerCase();
+
+      const cards =
+        document.querySelectorAll(
+          ".job-card"
+        );
+
+      cards.forEach(function(card){
+
+        const text =
+          card.innerText.toLowerCase();
+
+        if(text.includes(input)){
+
+          card.style.display =
+            "block";
+
+        }else{
+
+          card.style.display =
+            "none";
+
+        }
+
+      });
+
+    }
+
+    // =====================================
+    // START
+    // =====================================
+
+    loadJobs();
+
+  </script>
+  <!-- FIREBASE -->
+
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
+<script src="js/firebase.js"></script>
+
+<script src="js/app.js"></script>
 
 </body>
 </html>
