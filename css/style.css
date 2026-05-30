@@ -517,11 +517,16 @@ LOADING SPINNER
 
   color:white;
 
-  padding:25px;
+  padding:
 
-  border-bottom-left-radius:30px;
+    14px
+    18px
+    18px
+    12px;
 
-  border-bottom-right-radius:30px;
+  border-bottom-left-radius:26px;
+
+  border-bottom-right-radius:26px;
 
 }
 
@@ -545,9 +550,11 @@ LOADING SPINNER
 
   color:white;
 
-  font-size:34px;
+  font-size:36px;
 
-  margin-right:18px;
+  margin-right:14px;
+
+  margin-left:-2px;
 
   cursor:pointer;
 
@@ -559,23 +566,24 @@ LOADING SPINNER
 
 .app-title{
 
-  font-size:28px;
+  font-size:24px;
 
-  font-weight:bold;
+  font-weight:700;
 
   margin:0;
 
-}
+  line-height:1.1;
 
+}
 /* ===================================== */
 /* APP SUBTITLE */
 /* ===================================== */
 
 .app-subtitle{
 
-  margin-top:5px;
+  margin-top:2px;
 
-  font-size:15px;
+  font-size:13px;
 
   opacity:0.9;
 
