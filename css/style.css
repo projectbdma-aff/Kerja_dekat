@@ -511,80 +511,44 @@ LOADING SPINNER
 /* HEADER */
 /* ===================================== */
 
-.header{
-
-  background:#17a34a;
-
-  color:white;
-
-  padding:
-
-    12px
-    16px
-    14px
-    16px;
-
-  border-bottom-left-radius:20px;
-
-  border-bottom-right-radius:20px;
-
+.header {
+  background: #17a34a;
+  color: white;
+  
+  /* PERUBAHAN UTAMA: Jarak atas-bawah dipangkas habis (Atas 10px, Bawah 8px) */
+  padding: 10px 16px 8px 16px; 
+  
+  /* PERUBAHAN: Lengkungan dikurangi agar tidak memakan space tinggi */
+  border-bottom-left-radius: 14px;
+  border-bottom-right-radius: 14px;
 }
 
-/* ===================================== */
-/* HEADER TOP */
-/* ===================================== */
-
-.header-top{
-
-  display:flex;
-
-  align-items:center;
-
+.header-top {
+  display: flex;
+  align-items: center;
 }
 
-/* ===================================== */
-/* MENU */
-/* ===================================== */
-
-.white-menu{
-
-  color:white;
-
-  font-size:24px;
-
-  margin-right:12px;
-
-  margin-left:0px;
-
-  cursor:pointer;
-
+.white-menu {
+  color: white;
+  /* PERUBAHAN: Ikon dikecilkan agar tidak mendorong tinggi header */
+  font-size: 22px; 
+  margin-right: 12px;
+  margin-left: 0;
+  cursor: pointer;
 }
 
-/* ===================================== */
-/* APP TITLE */
-/* ===================================== */
-
-.app-title{
-
-  font-size:20px;
-
-  font-weight:700;
-
-  margin:0;
-
-  line-height:1.1;
-
+.app-title {
+  /* PERUBAHAN: Ukuran teks disesuaikan dengan header yang ramping */
+  font-size: 18px; 
+  font-weight: 700;
+  margin: 0;
+  line-height: 1; /* Membuat teks tidak memakan ruang atas-bawah */
 }
-/* ===================================== */
-/* APP SUBTITLE */
-/* ===================================== */
 
-.app-subtitle{
-
-  margin-top:1px;
-
-  font-size:12px;
-
-  opacity:0.85;
-
+.app-subtitle {
+  /* PERUBAHAN: Jarak antar judul dipangkas */
+  margin-top: 0px; 
+  font-size: 11px; 
+  opacity: 0.85;
+  line-height: 1;
 }
