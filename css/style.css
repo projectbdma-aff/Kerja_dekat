@@ -519,8 +519,8 @@ LOADING SPINNER
   padding: 8px 16px 1px 16px; 
   
   /* PERUBAHAN: Lengkungan dikurangi agar tidak memakan space tinggi */
-  border-bottom-left-radius: 14px;
-  border-bottom-right-radius: 14px;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
   position: sticky;
   top: 0;         /* Menempel pas di batas paling atas layar */
   z-index: 999;   
