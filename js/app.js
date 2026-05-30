@@ -39,10 +39,21 @@ function registerUser(){
       "registerLocation"
     ).value;
 
-  const category =
+  let category =
+  document.getElementById(
+    "category"
+  ).value;
+
+// CUSTOM
+
+if(category === "Custom"){
+
+  category =
     document.getElementById(
-      "registerCategory"
+      "customCategory"
     ).value;
+
+}
 
   // VALIDATION
 
@@ -953,6 +964,36 @@ function updateUserRating(userId){
     });
 
   });
+
+}
+
+// =====================================
+// TOGGLE CUSTOM CATEGORY
+// =====================================
+
+function toggleCustomCategory(){
+
+  const category =
+    document.getElementById(
+      "category"
+    ).value;
+
+  const customInput =
+    document.getElementById(
+      "customCategory"
+    );
+
+  if(category === "Custom"){
+
+    customInput.style.display =
+      "block";
+
+  }else{
+
+    customInput.style.display =
+      "none";
+
+  }
 
 }
 
