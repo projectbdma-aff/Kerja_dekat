@@ -2,18 +2,13 @@
   margin:0;
   padding:0;
   box-sizing:border-box;
-  font-family:Arial,sans-serif;
+  font-family:poppins,sans-serif;
 }
 
 body{
   background:#f5f7fa;
   color:#222;
   padding-bottom:100px;
-}
-Body{
-  font-family:
-    'Poppins',
-    sans-serif;
 }
 
 /* HEADER */
