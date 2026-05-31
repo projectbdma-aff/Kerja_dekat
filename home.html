@@ -215,280 +215,236 @@
     // =====================================
     // LOAD JOBS REALTIME
     // =====================================
+function loadJobs(){
 
-    function loadJobs(){
+  const jobsContainer =
+    document.getElementById(
+      "jobsContainer"
+    );
 
-      const container =
-        document.getElementById(
-          "jobsContainer"
-        );
+  jobsContainer.innerHTML = `
 
-      db.collection("jobs")
+    <div class="loading-box">
 
-      .orderBy(
-        "createdAt",
-        "desc"
-      )
+      <div class="spinner"></div>
 
-      .onSnapshot(async function(snapshot){
+    </div>
 
-        // EMPTY
+  `;
 
-        if(snapshot.empty){
+  db.collection("jobs")
 
-          container.innerHTML = `
+  .orderBy(
+    "createdAt",
+    "desc"
+  )
 
-            <div class="card">
+  .onSnapshot((snapshot)=>{
 
-              <p>
+    jobsContainer.innerHTML = "";
 
-                Belum ada job
+    if(snapshot.empty){
 
-              </p>
+      jobsContainer.innerHTML = `
+
+        <p
+          style="
+            text-align:center;
+            padding:30px;
+          "
+        >
+
+          Belum ada job
+
+        </p>
+
+      `;
+
+      return;
+
+    }
+
+    snapshot.forEach((doc)=>{
+
+      const job =
+        doc.data();
+
+      const jobId =
+        doc.id;
+
+      const user =
+        job.userData || {};
+
+      jobsContainer.innerHTML += `
+
+        <div class="job-card">
+
+          <!-- HEADER -->
+
+          <div class="job-header">
+
+            <div class="job-user">
+
+              <img
+                src="${
+                  user.photoUrl ||
+                  'https://i.imgur.com/6VBx3io.png'
+                }"
+                class="job-avatar"
+              >
+
+              <div>
+
+                <div class="job-name">
+
+                  ${
+                    user.name ||
+                    "User"
+                  }
+
+                  ${
+                    user.isPremium
+                    ?
+                    `
+                    <span class="premium-badge">
+                      🥇
+                    </span>
+                    `
+                    :
+                    user.isVerified
+                    ?
+                    `
+                    <span class="verified-badge">
+                      ✔️
+                    </span>
+                    `
+                    :
+                    ``
+                  }
+
+                </div>
+
+              </div>
 
             </div>
 
-          `;
+            <!-- RATING -->
 
-          return;
+            <div class="job-rating">
 
-        }
+              ${
+                (user.totalReviews || 0) > 0
+                ?
+                `
+                ⭐ ${
+                  user.averageRating || 0
+                }
+                `
+                :
+                `
+                Baru
+                `
+              }
 
-        // RESET
-
-        container.innerHTML = "";
-
-        // LOOP JOBS
-
-        for(const doc of snapshot.docs){
-
-          const job =
-            doc.data();
-
-          const jobId =
-            doc.id;
-
-          // USER
-
-          const userDoc =
-            await db.collection("users")
-
-            .doc(job.userId)
-
-            .get();
-
-          const user =
-            userDoc.data();
-
-          // BADGE
-
-          let badge = "";
-
-          if(user.isPremium){
-
-            badge = "🥇";
-
-          }else if(
-            user.isVerified
-          ){
-
-            badge = "✔️";
-
-          }
-
-          // RATING
-
-          let ratingText =
-            "Belum ada ulasan";
-
-          if(
-            user.totalReviews > 0
-          ){
-
-            ratingText = `
-              ⭐ ${user.averageRating}
-              (${user.totalReviews})
-            `;
-
-          }
-
-          // STATUS
-
-          let statusText = `
-            🟢 Masih Dibuka
-          `;
-
-          if(job.status === "closed"){
-
-            statusText = `
-              🔴 Sudah Dipilih
-            `;
-
-          }
-
-          // JOB CARD
-
-          container.innerHTML += `
-
-  <div class="job-card">
-
-    <!-- HEADER -->
-
-    <div class="job-header">
-
-      <!-- USER -->
-
-      <div class="job-user">
-
-        <!-- AVATAR -->
-
-        <img
-          src="${
-            user.photoUrl ||
-            'https://i.imgur.com/6VBx3io.png'
-          }"
-          class="job-avatar"
-        >
-
-        <!-- INFO -->
-
-        <div>
-
-          <div class="job-name">
-
-            ${user.name}
-
-            ${
-              user.isPremium
-              ?
-              `
-              <span class="premium-badge">
-                🥇
-              </span>
-              `
-              :
-              user.isVerified
-              ?
-              `
-              <span class="verified-badge">
-                ✔️
-              </span>
-              `
-              :
-              ``
-            }
+            </div>
 
           </div>
 
+          <!-- CONTENT -->
+
+          <div class="job-content">
+
+            <h2>
+
+              ${job.title || "-"}
+
+            </h2>
+
+            <p>
+
+              ${
+                job.description || "-"
+              }
+
+            </p>
+
+            <div class="job-meta">
+
+              <span>
+
+                📍 ${
+                  job.location || "-"
+                }
+
+              </span>
+
+              <span>
+
+                💰 Rp${
+                  job.price || 0
+                }
+
+              </span>
+
+            </div>
+
+          </div>
+
+          <!-- FOOTER -->
+
+          <div class="job-footer">
+
+            <div>
+
+              👥 ${
+                job.totalApplicants || 0
+              } Pelamar
+
+            </div>
+
+            <div>
+
+              ${
+                job.status === "closed"
+                ?
+                "🔴 Selesai"
+                :
+                "🟢 Aktif"
+              }
+
+            </div>
+
+          </div>
+
+          <!-- BUTTON -->
+
+          <button
+            class="btn"
+            onclick="
+              openDetailJob(
+                '${jobId}'
+              )
+            "
+          >
+
+            Lihat Detail
+
+          </button>
+
         </div>
 
-      </div>
+      `;
 
-      <!-- RATING -->
-
-      <div class="job-rating">
-
-        ${
-          user.totalReviews > 0
-          ?
-          `
-          ⭐ ${user.averageRating}
-          `
-          :
-          `
-          Baru
-          `
-        }
-
-      </div>
-
-    </div>
-
-    <!-- CONTENT -->
-
-    <div class="job-content">
-
-      <h2>
-
-        ${job.title}
-
-      </h2>
-
-      <p>
-
-        ${job.description}
-
-      </p>
-
-      <!-- META -->
-
-      <div class="job-meta">
-
-        <span>
-
-          📍 ${job.location}
-
-        </span>
-
-        <span>
-
-          💰 Rp${job.price}
-
-        </span>
-
-      </div>
-
-    </div>
-
-    <!-- FOOTER -->
-
-    <div class="job-footer">
-
-      <div>
-
-        👥
-        ${job.totalApplicants || 0}
-        Pelamar
-
-      </div>
-
-      <div>
-
-        ${
-          job.status === "closed"
-          ?
-          "🔴 Selesai"
-          :
-          "🟢 Aktif"
-        }
-
-      </div>
-
-    </div>
-
-    <!-- BUTTON -->
-
-    <button
-      class="btn"
-      onclick="
-        openDetailJob(
-          '${jobId}'
-        )
-      "
-    >
-
-      Lihat Detail
-
-    </button>
-
-  </div>
-
-`;
-});
+    });
 
   });
 
 }
+    
+
+          
+
+          
     
 
     // =====================================
