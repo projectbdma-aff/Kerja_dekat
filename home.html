@@ -330,100 +330,160 @@
 
           container.innerHTML += `
 
-            <div class="card job-card">
+  <div class="job-card">
 
-              <h2>
+    <!-- HEADER -->
 
-                ${job.title}
+    <div class="job-header">
 
-              </h2>
+      <!-- USER -->
 
-              <br>
+      <div class="job-user">
 
-              <p>
+        <!-- AVATAR -->
 
-                ${job.description}
+        <img
+          src="${
+            user.photoUrl ||
+            'https://i.imgur.com/6VBx3io.png'
+          }"
+          class="job-avatar"
+        >
 
-              </p>
+        <!-- INFO -->
 
-              <br>
+        <div>
 
-              <p>
+          <div class="job-name">
 
-                📍 ${job.location}
+            ${user.name}
 
-              </p>
+            ${
+              user.isPremium
+              ?
+              `
+              <span class="premium-badge">
+                🥇
+              </span>
+              `
+              :
+              user.isVerified
+              ?
+              `
+              <span class="verified-badge">
+                ✔️
+              </span>
+              `
+              :
+              ``
+            }
 
-              <br>
+          </div>
 
-              <p>
+        </div>
 
-                💰 Rp${job.price}
+      </div>
 
-              </p>
+      <!-- RATING -->
 
-              <br>
+      <div class="job-rating">
 
-              <p>
-
-                👥
-                ${job.totalApplicants || 0}
-                Pelamar
-
-              </p>
-
-              <br>
-
-              <p>
-
-                ${statusText}
-
-              </p>
-
-              <br>
-
-              <hr>
-
-              <br>
-
-              <p>
-
-                ${user.name}
-
-                ${badge}
-
-              </p>
-
-              <br>
-
-              <p>
-
-                ${ratingText}
-
-              </p>
-
-              <br>
-
-              <button
-                class="btn"
-                onclick="
-                  openDetailJob(
-                    '${jobId}'
-                  )
-                "
-              >
-
-                Lihat Detail
-
-              </button>
-
-            </div>
-
-          `;
-
+        ${
+          user.totalReviews > 0
+          ?
+          `
+          ⭐ ${user.averageRating}
+          `
+          :
+          `
+          Baru
+          `
         }
 
-      });
+      </div>
+
+    </div>
+
+    <!-- CONTENT -->
+
+    <div class="job-content">
+
+      <h2>
+
+        ${job.title}
+
+      </h2>
+
+      <p>
+
+        ${job.description}
+
+      </p>
+
+      <!-- META -->
+
+      <div class="job-meta">
+
+        <span>
+
+          📍 ${job.location}
+
+        </span>
+
+        <span>
+
+          💰 Rp${job.price}
+
+        </span>
+
+      </div>
+
+    </div>
+
+    <!-- FOOTER -->
+
+    <div class="job-footer">
+
+      <div>
+
+        👥
+        ${job.totalApplicants || 0}
+        Pelamar
+
+      </div>
+
+      <div>
+
+        ${
+          job.status === "closed"
+          ?
+          "🔴 Selesai"
+          :
+          "🟢 Aktif"
+        }
+
+      </div>
+
+    </div>
+
+    <!-- BUTTON -->
+
+    <button
+      class="btn"
+      onclick="
+        openDetailJob(
+          '${jobId}'
+        )
+      "
+    >
+
+      Lihat Detail
+
+    </button>
+
+  </div>
+
+`;
 
     }
 
